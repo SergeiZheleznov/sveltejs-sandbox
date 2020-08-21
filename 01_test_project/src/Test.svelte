@@ -2,4 +2,4 @@
 	export let name: number;
 </script>
 
-<p>{name}</p>
+<p class="bg-gray-500">{name}</p>
