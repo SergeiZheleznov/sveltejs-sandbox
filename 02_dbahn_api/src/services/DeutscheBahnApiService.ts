@@ -4,7 +4,9 @@ import Logger from 'js-logger';
 const LOG_SOURCE = 'DeutscheBahnApiService';
 
 export class DeutscheBahnApiService implements IDeutscheBahnApiService {
-  constructor(private bearer: string) {}
+  constructor(private bearer: string) {
+    Logger.info(`[${LOG_SOURCE}][${bearer}]`);
+  }
   public async findLocation(str): Promise<ILocationResponse[]> {
     Logger.debug(`[${LOG_SOURCE}] findLocation(${str})`);
     const {bearer} = this;
