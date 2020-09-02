@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '02_dbahn_api/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
