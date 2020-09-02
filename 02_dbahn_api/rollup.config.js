@@ -59,6 +59,19 @@ export default {
 				css.write('bundle.css');
 			},
 			preprocess: sveltePreprocess(),
+			emitCss: true
+		}),
+		postcss({
+			extract: true,
+			minimize: true,
+			use: [
+				['sass', {
+					includePaths: [
+						'./src/theme',
+						'./node_modules'
+					]
+				}]
+			]
 		}),
 
 		// If you have external dependencies installed from
@@ -73,18 +86,7 @@ export default {
 
 		commonjs(),
 
-		postcss({
-			extract: true,
-			minimize: true,
-			use: [
-				['sass', {
-					includePaths: [
-						'./src/theme',
-						'./node_modules'
-					]
-				}]
-			]
-		}),
+
 		typescript({ sourceMap: !production }),
 
 		// In dev mode, call `npm run start` once

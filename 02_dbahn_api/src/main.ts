@@ -10,7 +10,7 @@ declare var __app: any;
 const app = new App({
 	target: document.body,
 	props: {
-		token: __app.API_TOKEN
+		token: __app.env.API_TOKEN
 	}
 });
 

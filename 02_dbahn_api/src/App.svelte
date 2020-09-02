@@ -1,22 +1,30 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-import LocationList from './containers/LocationList/LocationList.svelte';
-import type { ILocationResponse } from './interfaces';
+	import LocationList from './containers/LocationList/LocationList.svelte';
+	import type { ILocationResponse } from './interfaces';
 	import {DeutscheBahnApiService} from './services/DeutscheBahnApiService';
+	import LinearProgress from '@smui/linear-progress';
 
 	export let token: string;
 
 	const db = new DeutscheBahnApiService(token);
 
+	let status: 'loading' | 'loaded' = "loading";
+	
 	let locations: ILocationResponse[] = [];
 
 	onMount(async ()=>{
 		locations = await db.findLocation('Heilbronn');
+		status = "loaded";
 	});
 </script>
 
 <main>
-	<LocationList locations={locations} />
+	{#if status === "loading"}
+		<LinearProgress indeterminate />
+	{:else}
+		<LocationList locations={locations} />
+	{/if}
 </main>
 
 <style>
