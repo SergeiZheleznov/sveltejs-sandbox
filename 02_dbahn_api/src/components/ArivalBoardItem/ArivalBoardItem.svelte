@@ -4,7 +4,7 @@
 </script>
 
 <div class="item">
-  <div>
+  <div class="origin">
     {@html item.origin}
   </div>
   <div class="col-track">
@@ -19,6 +19,9 @@
     color: white;
     padding: 1rem 3rem;
     margin-bottom: 0.2rem;
+  }
+  .origin {
+    font-size: 2rem;
   }
   .col-track {
     font-size: larger;
