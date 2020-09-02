@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { ILocationResponse } from "../../interfaces";
-  export let locations: ILocationResponse[];
+  import type { ILocation } from "../../interfaces";
+  export let locations: ILocation[];
 </script>
 
 <section>

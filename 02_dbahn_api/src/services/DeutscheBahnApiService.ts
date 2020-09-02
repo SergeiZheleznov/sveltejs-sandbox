@@ -10,39 +10,29 @@ export class DeutscheBahnApiService implements IDeutscheBahnApiService {
     Logger.info(`[${LOG_SOURCE}][${bearer}]`);
   }
   
-  public async getArivalBoard(location: ILocation): Promise<IArivalBoardItem[]> {
-    Logger.info(`[${LOG_SOURCE}] getArivalBoard()`);
-    
+  public async getArivalBoard(location: ILocation, time: Date): Promise<IArivalBoardItem[]> {
     try {
-      const data: IArivalBoardItem[] = await this.request('/arrivalBoard/${location.id}?date=2020-09-02T20%3A00');
-      //const data: IArivalBoardItem[] = await response.data;
+      const data: IArivalBoardItem[] = await this.request(`arrivalBoard/${location.id}?date=${time.toISOString()}`);
+      Logger.info(`[${LOG_SOURCE}] getArivalBoard()`, data);
       return data;
     } catch (error) {
       Logger.error(LOG_SOURCE, error);
     }
   }
 
-  public async findLocation(str): Promise<ILocation[]> {
-    Logger.info(`[${LOG_SOURCE}] findLocation(${str})`);
-    const {bearer, url} = this;
+  public async findLocation(name): Promise<ILocation[]> {
     try {
-      const response = await axios.get(`${url}/location/${str}`,{
-        headers:{
-          "Authorization": `Bearer ${bearer}`,
-          "Accept": 'application/json'
-        }
-      });
-      const data: ILocation[] = await response.data;
+      const data: ILocation[] = await this.request(`location/${name}`);
+      Logger.info(`[${LOG_SOURCE}] findLocation(${name})`, data);
       return data;
     } catch (error) {
       Logger.error(LOG_SOURCE, error);
     }
   }
 
-  private async request<TData>(str: string): Promise<TData> {
-    // arrivalBoard/8000157?date=2020-09-02T18%3A00
+  private async request<TData>(endpoint: string): Promise<TData> {
     const {bearer, url} = this;
-    const response = await axios.get(`${url}`,{
+    const response = await axios.get(`${url}/${endpoint}`,{
       headers:{
         "Authorization": `Bearer ${bearer}`,
         "Accept": 'application/json'
@@ -50,5 +40,4 @@ export class DeutscheBahnApiService implements IDeutscheBahnApiService {
     });
     return response.data;
   }
-
 }

@@ -3,5 +3,5 @@ import type { IArivalBoardItem } from "./IArivalBoardItem";
 
 export interface IDeutscheBahnApiService {
   findLocation(str: string): Promise<ILocation[]>;
-  getArivalBoard(location: ILocation): Promise<IArivalBoardItem[]>;
+  getArivalBoard(location: ILocation, time: Date): Promise<IArivalBoardItem[]>;
 }
