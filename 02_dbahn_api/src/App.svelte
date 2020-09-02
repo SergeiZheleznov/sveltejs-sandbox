@@ -3,7 +3,7 @@
 	import LocationList from './containers/LocationList/LocationList.svelte';
 	import type { ILocationResponse } from './interfaces';
 	import {DeutscheBahnApiService} from './services/DeutscheBahnApiService';
-	import LinearProgress from '@smui/linear-progress';
+
 
 	export let token: string;
 
@@ -21,7 +21,9 @@
 
 <main>
 	{#if status === "loading"}
-		<LinearProgress indeterminate />
+		<div>
+			Loading ...
+		</div>
 	{:else}
 		<LocationList locations={locations} />
 	{/if}
