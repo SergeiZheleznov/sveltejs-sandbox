@@ -1,24 +1,27 @@
 <script lang="ts">
   import type { IArivalBoardItem, IDeutscheBahnApiService, ILocation } from "../../interfaces";
   import {onMount} from 'svelte';
-import type { ComponentStatus } from "../../utils/ComponentStatus";
-import ArivalBoardItem from "../../components/ArivalBoardItem/ArivalBoardItem.svelte";
-
+  import type { ComponentStatus } from "../../utils/ComponentStatus";
+  import ArivalBoardItem from "../../components/ArivalBoardItem/ArivalBoardItem.svelte";
+  import locationStore from '../../stores/current-location-store';
+  
   export let dbApiService: IDeutscheBahnApiService;
-  export let location: ILocation;
+
+  let location;
+  locationStore.subscribe(value => {
+    location = value;
+  });
 
   let arivalBoard: IArivalBoardItem[] = [];
-
   let time = new Date();
-  let status: "loading" | "loaded" | "error";
-  let error: any = null;
+  let status: "loading" | "loaded" | "error" = "loading";
+  let errorMessage: string = null;
 
   onMount(async ()=> {
     try {
       arivalBoard = await dbApiService.getArivalBoard(location, time);
-      error = null;
     } catch (e) {
-      error = e;
+      errorMessage = e.message;
     } finally {
       status = "loaded";
     }
@@ -26,29 +29,30 @@ import ArivalBoardItem from "../../components/ArivalBoardItem/ArivalBoardItem.sv
 </script>
 
 <section>
-  {#if error}
-    <div>
-      {JSON.stringify(error)}
+  {#if errorMessage}
+    <div class="message">
+      {errorMessage}
     </div>
-  {:else if status === "loaded"}
-    <h1>{location.name}</h1>
-    {#each arivalBoard as item}
-      <ArivalBoardItem item={item} />
-    {/each}
-
-  {:else if status === "loading"}
-    <div>
+  {:else if status == "loaded"}
+    {#if arivalBoard.length}
+      {#each arivalBoard as item}
+        <ArivalBoardItem item={item} />
+      {/each}
+    {:else}
+      <div class="message">No items</div>
+    {/if}
+  {:else if status == "loading"}
+    <div class="message">
       loading...
     </div>
   {/if}
-
 </section>
 
 <style>
   section {
-    border: 1px solid #ccc;
-    background-color: #333;
-    color: white;
-    padding: 3rem;
+    border: 2px solid #333;
+  }
+  .message {
+    padding: 1rem;
   }
 </style>

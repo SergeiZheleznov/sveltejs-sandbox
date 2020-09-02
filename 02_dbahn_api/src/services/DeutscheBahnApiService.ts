@@ -17,6 +17,7 @@ export class DeutscheBahnApiService implements IDeutscheBahnApiService {
       return data;
     } catch (error) {
       Logger.error(LOG_SOURCE, error);
+      throw new Error(`Service is unavailable`);
     }
   }
 
@@ -27,6 +28,7 @@ export class DeutscheBahnApiService implements IDeutscheBahnApiService {
       return data;
     } catch (error) {
       Logger.error(LOG_SOURCE, error);
+      throw new Error(`Service is unavailable`);
     }
   }
 
