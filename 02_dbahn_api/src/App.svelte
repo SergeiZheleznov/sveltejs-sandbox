@@ -1,20 +1,24 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import LocationList from './containers/LocationList/LocationList.svelte';
-	import type { IConfigurationService, IDeutscheBahnApiService, ILocationResponse } from './interfaces';
+	import type { IConfigurationService, IDeutscheBahnApiService, ILocation } from './interfaces';
 	import {DeutscheBahnApiService} from './services/DeutscheBahnApiService';
 
 
 	export let configurationService: IConfigurationService;
 
 	let db: IDeutscheBahnApiService;
-	let locations: ILocationResponse[] = [];
+	let locations: ILocation[] = [];
 	let status: 'loading' | 'loaded' = "loading";
 
 	onMount(async ()=> {
 		const token = await configurationService.getBearer();
 		db = new DeutscheBahnApiService(token);
 		locations = await db.findLocation('Heilbronn');
+
+		const arrivalBoard = await db.getArivalBoard(locations[0]);
+		console.log(arrivalBoard);
+
 		status = "loaded";
 	});
 </script>

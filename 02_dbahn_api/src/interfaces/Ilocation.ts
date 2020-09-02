@@ -1,4 +1,4 @@
-export interface ILocationResponse {
+export interface ILocation {
   id: number;
   lat: number;
   lon: number;

@@ -1,3 +1,4 @@
 export * from './IDeutscheBahnApiService';
-export * from './IlocationResponse';
+export * from './Ilocation';
 export * from './IConfigurationService';
+export * from './IArivalBoardItem';

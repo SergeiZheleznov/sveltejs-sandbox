@@ -1,5 +1,7 @@
-import type { ILocationResponse } from "./IlocationResponse";
+import type { ILocation } from "./Ilocation";
+import type { IArivalBoardItem } from "./IArivalBoardItem";
 
 export interface IDeutscheBahnApiService {
-  findLocation(str: string): Promise<ILocationResponse[]>;
+  findLocation(str: string): Promise<ILocation[]>;
+  getArivalBoard(location: ILocation): Promise<IArivalBoardItem[]>;
 }
