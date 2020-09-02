@@ -1,41 +1,30 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
+import LocationList from './containers/LocationList/LocationList.svelte';
+import type { ILocationResponse } from './interfaces';
 	import {DeutscheBahnApiService} from './services/DeutscheBahnApiService';
 
 	export let token: string;
 
 	const db = new DeutscheBahnApiService(token);
 
+	let locations: ILocationResponse[] = [];
+
 	onMount(async ()=>{
-		const res = await db.findLocation('Heilbronn');
-		
-		console.log('res', res);
+		locations = await db.findLocation('Heilbronn');
 	});
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<LocationList locations={locations} />
 </main>
 
 <style>
 	main {
-		text-align: center;
 		padding: 1em;
-		max-width: 240px;
+		max-width: 940px;
+		display: block;
 		margin: 0 auto;
 	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
 </style>

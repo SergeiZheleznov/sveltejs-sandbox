@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "js-logger": "^1.6.0",
     "rollup-plugin-postcss": "^3.1.8",
     "sirv-cli": "^1.0.0"
   }
