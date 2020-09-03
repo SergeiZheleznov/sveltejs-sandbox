@@ -1,12 +1,13 @@
 import { writable } from 'svelte/store';
 import type { ILocation } from '../interfaces';
 
-const locations = writable(null);
+const location = writable(null);
 
 const customStore = {
-  subscribe: locations.subscribe,
+  subscribe: location.subscribe,
   setLocation: (item: ILocation) => {
-    locations.set(item);
+    console.log(`location store new value`, item)
+    location.set(item);
   }
 }
 export default customStore;

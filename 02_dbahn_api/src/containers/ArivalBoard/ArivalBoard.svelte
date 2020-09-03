@@ -3,13 +3,17 @@
   import {onMount} from 'svelte';
   import type { ComponentStatus } from "../../utils/ComponentStatus";
   import ArivalBoardItem from "../../components/ArivalBoardItem/ArivalBoardItem.svelte";
+  import serviceStore from '../../stores/service-store';
   import locationStore from '../../stores/current-location-store';
   
-  export let dbApiService: IDeutscheBahnApiService;
+  let dbApiService: IDeutscheBahnApiService;
+  serviceStore.subscribe(value => {
+    dbApiService = value;
+  });
 
-  let location;
-  locationStore.subscribe(value => {
-    location = value;
+	let location: ILocation;
+	locationStore.subscribe(value => {
+		location = value;
   });
 
   let arivalBoard: IArivalBoardItem[] = [];
@@ -18,6 +22,7 @@
   let errorMessage: string = null;
 
   onMount(async ()=> {
+    console.log(`[ArivalBoard] onMount(${location.name});`);
     try {
       arivalBoard = await dbApiService.getArivalBoard(location, time);
     } catch (e) {
@@ -25,15 +30,12 @@
     } finally {
       status = "loaded";
     }
-	});
+  });
+  console.log('location',location);
 </script>
 
 <section>
-  {#if errorMessage}
-    <div class="message">
-      {errorMessage}
-    </div>
-  {:else if status == "loaded"}
+  {#if status == "loaded"}
     {#if arivalBoard.length}
       {#each arivalBoard as item}
         <ArivalBoardItem item={item} />

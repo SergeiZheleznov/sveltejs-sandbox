@@ -7,6 +7,9 @@
   const time = new Date(item.dateTime);
 </script>
 
+<svelte:head>
+  <title>Arival Board</title>
+</svelte:head>
 <div class="wrapper">
   <div class="item">
     <div class="col-1_3">

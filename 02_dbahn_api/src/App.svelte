@@ -6,42 +6,74 @@
 	import defaultLocation from './repository/DefaultLocation';
 	import ArivalBoard from './containers/ArivalBoard/ArivalBoard.svelte';
 	import locationStore from './stores/current-location-store';
+	import serviceStore from './stores/service-store';
+	import dateFormat from 'dateformat';
 
 	export let configurationService: IConfigurationService;
 
-	let location;
+	let location: ILocation;
 	locationStore.subscribe(value => {
 		location = value;
 	});
 
 	let dbApiService: IDeutscheBahnApiService;
-	let locations: ILocation[] = [];
+	serviceStore.subscribe(value => {
+		dbApiService = value;
+	});
+
 	let status: 'loading' | 'loaded' = "loading";
 
+	let showLocationsList: boolean = false;
+
 	let searchString: string;
+	const onFormSubmit = () => {
+		showLocationsList = true;
+	}
 
 	onMount(async ()=> {
 		const token = await configurationService.getBearer();
 		dbApiService = new DeutscheBahnApiService(token);
-		// locations = await db.findLocation('Heilbronn');
-		locationStore.setLocation(defaultLocation);
-		searchString = defaultLocation.name;
+		serviceStore.setDBApiService(dbApiService);
 		status = "loaded";
 	});
 </script>
 
 <div class="container">
-	<div class="main">
-		{#if status === "loading"}
-			<div>
-				Loading ...
-			</div>
-		{:else}
-			<input class="station-input" bind:value={searchString} on:focus={()=>{
-
-			}} />
-			<ArivalBoard dbApiService={dbApiService} />
-		{/if}
+	<div class="wrapper">
+		<div class="location-search-form">
+			<form on:submit|preventDefault={onFormSubmit}>
+				<input placeholder="Find location" class="station-input" bind:value={searchString} on:blur={()=>{
+					(async()=>{
+						setTimeout(()=>{
+							showLocationsList = false;
+							searchString = '';
+						}, 100)
+					})();
+				}} />
+			</form>
+		</div>
+		<div class="main">
+			{#if status === "loading"}
+				<div>
+					Loading ...
+				</div>
+			{:else}
+				<div class="header">
+					<div class="main-col">
+						{location ? location.name : '...'}
+					</div>
+					<div class="secondary-col">
+						{dateFormat(new Date(), 'HH:mm')}
+					</div>
+				</div>
+				{#if showLocationsList}
+					<LocationList name={searchString} />			
+				{/if}
+				{#if location}
+					<ArivalBoard />
+				{/if}
+			{/if}
+		</div>
 	</div>
 </div>
 
@@ -54,10 +86,16 @@
 		align-items:center;
 	}
 
+	.wrapper {
+		width: 60%;
+	}
+
+	.location-search-form {
+		margin-bottom: 3rem;
+	}
+
 	.main {
 		padding: 1rem;
-		max-width: 940px;
-		min-width: 640px;
 		border: 1px solid #ccc;
     background-color: #222;
     color: white;
@@ -65,15 +103,29 @@
     -moz-box-shadow: 0px -1px 70px -1px rgba(0,0,0,0.27);
     box-shadow: 0px -1px 70px -1px rgba(0,0,0,0.27);
 	}
-
 	.station-input {
-		border: none;
-		color: white;
+		border: 1px solid #ccc;
+		color: #444;
 		padding: 10px;
+		width: 100%;
 		margin: 0;
-		background-color: transparent;
+		background-color: white;
 		outline: transparent;
 		box-sizing: border-box;
 		font-size: 2rem;
+	}
+	.header {
+		display: flex;
+		align-items: center;
+		justify-items: stretch;
+	}
+	.main-col {
+		width: 80%;
+		font-size: 1.4rem;
+	}
+	.secondary-col {
+		width: 20%;
+		font-size: 2rem;
+		text-align: right;
 	}
 </style>
