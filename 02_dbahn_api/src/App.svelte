@@ -25,6 +25,7 @@
 
 	onMount(async ()=> {
 		const token = await configurationService.getBearer();
+		console.log('[App] onMount()', token);
 		dbApiService = new DeutscheBahnApiService(token);
 		status = "loaded";
 	});

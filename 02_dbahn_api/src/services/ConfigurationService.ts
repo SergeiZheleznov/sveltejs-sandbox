@@ -10,10 +10,11 @@ export class ConfigurationService implements IConfigurationService {
   public async getBearer(): Promise<string> {
 
     if (__app.env.API_TOKEN) {
+      console.log('API key was found in enviroment variables');
       return __app.env.API_TOKEN;
     }
     const response: IResponse = await axios.get(this.url);
-    console.log('response.key',response.key);
+    console.log('response.key',response);
     return response.key;
   }
 }
