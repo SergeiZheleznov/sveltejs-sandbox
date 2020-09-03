@@ -2,7 +2,6 @@
   import LocationItem from "../../components/LocationItem/LocationItem.svelte";
   import type { IDeutscheBahnApiService, ILocation } from "../../interfaces";
   import {onMount} from 'svelte';
-  import serviceStore from '../../stores/service-store';
   import locationStore from '../../stores/current-location-store';
   
   export let name: string;
@@ -12,11 +11,7 @@
 		location = value;
 	});
 
-  let dbApiService: IDeutscheBahnApiService;
-	serviceStore.subscribe(value => {
-		dbApiService = value;
-	});
-
+  export let dbApiService: IDeutscheBahnApiService;
   let locations: ILocation[] = [];
 
   onMount(async()=>{

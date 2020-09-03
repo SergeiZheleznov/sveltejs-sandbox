@@ -3,13 +3,9 @@
   import {onMount} from 'svelte';
   import type { ComponentStatus } from "../../utils/ComponentStatus";
   import ArivalBoardItem from "../../components/ArivalBoardItem/ArivalBoardItem.svelte";
-  import serviceStore from '../../stores/service-store';
   import locationStore from '../../stores/current-location-store';
   
-  let dbApiService: IDeutscheBahnApiService;
-  serviceStore.subscribe(value => {
-    dbApiService = value;
-  });
+  export let dbApiService: IDeutscheBahnApiService;
 
 	let location: ILocation;
 	locationStore.subscribe(value => {

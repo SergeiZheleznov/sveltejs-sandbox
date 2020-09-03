@@ -6,7 +6,6 @@
 	import defaultLocation from './repository/DefaultLocation';
 	import ArivalBoard from './containers/ArivalBoard/ArivalBoard.svelte';
 	import locationStore from './stores/current-location-store';
-	import serviceStore from './stores/service-store';
 	import dateFormat from 'dateformat';
 
 	export let configurationService: IConfigurationService;
@@ -17,14 +16,8 @@
 	});
 
 	let dbApiService: IDeutscheBahnApiService;
-	serviceStore.subscribe(value => {
-		dbApiService = value;
-	});
-
 	let status: 'loading' | 'loaded' = "loading";
-
 	let showLocationsList: boolean = false;
-
 	let searchString: string;
 	const onFormSubmit = () => {
 		showLocationsList = true;
@@ -33,7 +26,6 @@
 	onMount(async ()=> {
 		const token = await configurationService.getBearer();
 		dbApiService = new DeutscheBahnApiService(token);
-		serviceStore.setDBApiService(dbApiService);
 		status = "loaded";
 	});
 </script>
@@ -67,10 +59,10 @@
 					</div>
 				</div>
 				{#if showLocationsList}
-					<LocationList name={searchString} />			
+					<LocationList dbApiService={dbApiService} name={searchString} />			
 				{/if}
 				{#if location}
-					<ArivalBoard />
+					<ArivalBoard dbApiService={dbApiService} />
 				{/if}
 			{/if}
 		</div>
