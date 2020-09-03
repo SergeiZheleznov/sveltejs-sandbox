@@ -1,8 +1,5 @@
 import type { IConfigurationService } from "../interfaces";
 import axios from 'axios';
-interface IResponse {
-  key: string
-}
 declare var __app;
 
 export class ConfigurationService implements IConfigurationService {
@@ -13,8 +10,11 @@ export class ConfigurationService implements IConfigurationService {
       console.log('API key was found in enviroment variables');
       return __app.env.API_TOKEN;
     }
-    const response: IResponse = await axios.get(this.url);
+    const response = await axios.get(this.url);
     console.log('response.key',response);
-    return response.key;
+    if (response.data && response.data.key) {
+      return response.data.key;
+    }
+    return 'api_key_was_not_found';
   }
 }
