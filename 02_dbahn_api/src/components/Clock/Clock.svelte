@@ -10,7 +10,7 @@
   }, 1000);
 </script>
 
-<span>{dateFormat(time, `HH`)}{@html tick ? ':' : '&nbsp;'}{dateFormat(time, `mm`)}</span>
+<span>{dateFormat(time, `HH`)}{@html tick ? ':' : '&nbsp;'}{dateFormat(time, `MM`)}</span>
 
 <style>
   span {
