@@ -5,15 +5,11 @@
 	import {DeutscheBahnApiService} from './services/DeutscheBahnApiService';
 	import defaultLocation from './repository/DefaultLocation';
 	import ArivalBoard from './containers/ArivalBoard/ArivalBoard.svelte';
-	import locationStore from './stores/current-location-store';
+	import location from './stores/current-location-store';
 	import dateFormat from 'dateformat';
+	import Clock from './components/Clock/Clock.svelte';
 
 	export let configurationService: IConfigurationService;
-
-	let location: ILocation;
-	locationStore.subscribe(value => {
-		location = value;
-	});
 
 	let dbApiService: IDeutscheBahnApiService;
 	let status: 'loading' | 'loaded' = "loading";
@@ -53,17 +49,17 @@
 			{:else}
 				<div class="header">
 					<div class="main-col">
-						{location ? location.name : '...'}
+						{$location ? $location.name : '...'}
 					</div>
 					<div class="secondary-col">
-						{dateFormat(new Date(), 'HH:mm')}
+						<Clock />
 					</div>
 				</div>
 				{#if showLocationsList}
 					<LocationList dbApiService={dbApiService} name={searchString} />			
 				{/if}
-				{#if location}
-					<ArivalBoard dbApiService={dbApiService} />
+				{#if $location}
+					<ArivalBoard dbApiService={dbApiService} location={$location} />
 				{/if}
 			{/if}
 		</div>
@@ -88,8 +84,8 @@
 	}
 
 	.main {
-		padding: 1rem;
-		border: 1px solid #ccc;
+		padding: 2rem;
+		border: 4px solid #ccc;
     background-color: #222;
     color: white;
     -webkit-box-shadow: 0px -1px 70px -1px rgba(0,0,0,0.27);
@@ -107,18 +103,22 @@
 		box-sizing: border-box;
 		font-size: 2rem;
 	}
+	.station-input::placeholder {
+		color: #ccc;
+	}
+
 	.header {
 		display: flex;
 		align-items: center;
 		justify-items: stretch;
+		margin-bottom: 1rem;
 	}
 	.main-col {
 		width: 80%;
-		font-size: 1.4rem;
+		font-size: 2rem;
 	}
 	.secondary-col {
 		width: 20%;
-		font-size: 2rem;
 		text-align: right;
 	}
 </style>

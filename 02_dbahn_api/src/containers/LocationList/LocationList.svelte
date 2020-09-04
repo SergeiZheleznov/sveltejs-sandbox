@@ -20,7 +20,7 @@
 
   const onItemSelect = (el) => {
     const newLocation = el.detail as ILocation;
-    locationStore.setLocation(newLocation);
+    locationStore.setLocation({...newLocation});
   }
 
 </script>

@@ -1,16 +1,10 @@
 <script lang="ts">
   import type { IArivalBoardItem, IDeutscheBahnApiService, ILocation } from "../../interfaces";
   import {onMount} from 'svelte';
-  import type { ComponentStatus } from "../../utils/ComponentStatus";
   import ArivalBoardItem from "../../components/ArivalBoardItem/ArivalBoardItem.svelte";
-  import locationStore from '../../stores/current-location-store';
-  
-  export let dbApiService: IDeutscheBahnApiService;
 
-	let location: ILocation;
-	locationStore.subscribe(value => {
-		location = value;
-  });
+  export let dbApiService: IDeutscheBahnApiService;
+  export let location: ILocation;
 
   let arivalBoard: IArivalBoardItem[] = [];
   let time = new Date();
@@ -27,8 +21,17 @@
       status = "loaded";
     }
   });
-  console.log('location',location);
+
+  $: {
+    (async()=>{
+      arivalBoard = await dbApiService.getArivalBoard(location, time);
+    })();
+	}
 </script>
+
+<svelte:head>
+  <title>Arival Board: {location && location.name ? location.name : '..'}</title>
+</svelte:head>
 
 <section>
   {#if status == "loaded"}

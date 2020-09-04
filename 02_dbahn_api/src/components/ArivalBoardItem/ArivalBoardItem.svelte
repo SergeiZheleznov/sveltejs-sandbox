@@ -1,16 +1,14 @@
 <script lang="ts">
   import type { IArivalBoardItem } from "../../interfaces";
   import dateFormat from 'dateformat';
+  import {fade} from 'svelte/transition';
 
   export let item: IArivalBoardItem;
 
   const time = new Date(item.dateTime);
 </script>
 
-<svelte:head>
-  <title>Arival Board</title>
-</svelte:head>
-<div class="wrapper">
+<div transition:fade class="wrapper">
   <div class="item">
     <div class="col-1_3">
       <div class="name">{item.name}</div>
@@ -26,7 +24,6 @@
     </div>
   </div>
 </div>
-
 
 <style>
   .col-1_3 {
