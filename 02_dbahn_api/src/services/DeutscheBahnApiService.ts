@@ -12,6 +12,15 @@ export class DeutscheBahnApiService implements IDeutscheBahnApiService {
   constructor(private bearer: string) {
     Logger.info(`[${LOG_SOURCE}][${bearer}]`);
   }
+
+  public async checkApiAvailabillity(): Promise<boolean> {
+    return axios.get(`${this.url}`).then(resolve => true).catch(reject => {
+      if (reject.response.status === 401) {
+        return true;
+      }
+      return false;
+    });
+  }
   
   public async getArivalBoard(location: ILocation, time: Date): Promise<IArivalBoardItem[]> {
     Logger.info(`[${LOG_SOURCE}] getArivalBoard()`);
@@ -19,7 +28,7 @@ export class DeutscheBahnApiService implements IDeutscheBahnApiService {
     try {
       data = await this.request(`arrivalBoard/${location.id}?date=${dateFormat(time, 'yyyy-mm-dd%3AHH:MM')}`);
     } catch (error) {
-      Logger.warn(`[${LOG_SOURCE}] api endpoint is unavailbale, using mock service instead!`, error);
+      Logger.warn(`[${LOG_SOURCE}] api endpoint is unavailable, using mock service instead!`, error);
       const {mockService} = this;
       data = await mockService.getArivalBoard(location, time);
     } finally {
@@ -42,7 +51,7 @@ export class DeutscheBahnApiService implements IDeutscheBahnApiService {
     }
   }
 
-  private async request<TData>(endpoint: string): Promise<TData> {
+  private async request<TData>(endpoint: string = ''): Promise<TData> {
     Logger.info(`[${LOG_SOURCE}] /${endpoint}`);
     try {
       const {bearer, url} = this;

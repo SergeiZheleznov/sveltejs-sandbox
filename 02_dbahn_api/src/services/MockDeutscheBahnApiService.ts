@@ -5,6 +5,10 @@ const LOG_SOURCE = 'MockDeutscheBahnApiService';
 
 export class MockDeutscheBahnApiService implements IDeutscheBahnApiService {
   
+  public async checkApiAvailabillity(): Promise<boolean> {
+    return true;
+  }
+  
   public async getArivalBoard(location: ILocation, time: Date): Promise<IArivalBoardItem[]> {
     return [
       {

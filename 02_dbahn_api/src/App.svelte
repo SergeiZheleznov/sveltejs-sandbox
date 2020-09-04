@@ -8,6 +8,7 @@
 	import location from './stores/current-location-store';
 	import dateFormat from 'dateformat';
 	import Clock from './components/Clock/Clock.svelte';
+import ApiStatus from './components/ApiStatus/ApiStatus.svelte';
 
 	export let configurationService: IConfigurationService;
 
@@ -53,6 +54,7 @@
 					</div>
 					<div class="secondary-col">
 						<Clock />
+						<ApiStatus dbApiService={dbApiService} />
 					</div>
 				</div>
 				{#if showLocationsList}
@@ -110,15 +112,18 @@
 	.header {
 		display: flex;
 		align-items: center;
-		justify-items: stretch;
+		justify-content: space-between;
 		margin-bottom: 1rem;
 	}
 	.main-col {
-		width: 80%;
+		flex-grow: 1;
 		font-size: 2rem;
 	}
 	.secondary-col {
-		width: 20%;
-		text-align: right;
+		flex-grow: 0;
+		display: inline-flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		align-items: center;
 	}
 </style>
