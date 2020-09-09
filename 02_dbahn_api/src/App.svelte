@@ -2,18 +2,14 @@
 	import {onMount} from 'svelte';
 	import type { IConfigurationService, IDeutscheBahnApiService } from './interfaces';
 	import {DeutscheBahnApiService} from './services/DeutscheBahnApiService';
-	import defaultLocation from './repository/DefaultLocation';
 	import ArivalBoard from './containers/ArivalBoard/ArivalBoard.svelte';
-	import location from './stores/station-store';
-	import dateFormat from 'dateformat';
-	import Clock from './components/Clock/Clock.svelte';
-	import ApiStatus from './components/ApiStatus/ApiStatus.svelte';
 	import ApolloClient from 'apollo-boost';
 	import { createHttpLink } from "apollo-link-http";
 	import { setClient } from 'svelte-apollo';
 	import type { HttpOptions } from "apollo-link-http-common";
 	import StationSelect from './containers/StationSelect/StationSelect.svelte';
 	import {activeComponent, componentsAvailable} from './stores/active-component-store';
+import TableHeader from './components/TableHeader/TableHeader.svelte';
 	
 	export let configurationService: IConfigurationService;
 
@@ -51,17 +47,7 @@
 				Connecting to DB API ...
 			</div>
 		{:else}
-			<div class="header">
-				<div class="main-col">
-					{$location ? $location.name : '...'}
-				</div>
-				<div class="secondary-col">
-					<Clock />
-					{#if dbApiService}
-						<ApiStatus dbApiService={dbApiService} />
-					{/if}
-				</div>
-			</div>
+			<TableHeader dbApiService={dbApiService} />
 			{#if $activeComponent === componentsAvailable.SelectStation}
 				<StationSelect dbApiService={dbApiService} searchString={searchString} />			
 			{/if}
@@ -103,21 +89,5 @@
 		color: #ccc;
 	}
 
-	.header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 1rem;
-	}
-	.main-col {
-		flex-grow: 1;
-		font-size: 2rem;
-	}
-	.secondary-col {
-		flex-grow: 0;
-		display: inline-flex;
-		flex-wrap: wrap;
-		gap: 12px;
-		align-items: center;
-	}
+
 </style>
