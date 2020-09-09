@@ -42,14 +42,7 @@
 <div class="container">
 	<div class="location-search-form">
 		<form on:submit|preventDefault={onFormSubmit}>
-			<input placeholder="Find location" class="station-input" bind:value={searchString} on:blur={()=>{
-				(async()=>{
-					setTimeout(()=>{
-						$activeComponent = componentsAvailable.None;
-						searchString = '';
-					}, 100)
-				})();
-			}} />
+			<input placeholder="Find location" class="station-input" bind:value={searchString} />
 		</form>
 	</div>
 	<div class="main">
