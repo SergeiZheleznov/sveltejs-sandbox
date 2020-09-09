@@ -3,6 +3,7 @@ import axios from 'axios';
 declare var __app;
 
 export class ConfigurationService implements IConfigurationService {
+
   private url = '/api/token';
   public async getBearer(): Promise<string> {
 
@@ -16,5 +17,9 @@ export class ConfigurationService implements IConfigurationService {
       return response.data.key;
     }
     return 'api_key_was_not_found';
+  }
+
+  public getGraphQLEndpoint(): string {
+    return 'https://api.deutschebahn.com/free1bahnql/v1/graphql';
   }
 }

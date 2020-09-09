@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ILocation } from "../../interfaces";
-  import locationStore from '../../stores/current-location-store';
+  import locationStore from '../../stores/station-store';
   import {createEventDispatcher} from 'svelte';
   const dispatch = createEventDispatcher();
 

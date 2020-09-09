@@ -22,14 +22,17 @@
     "svelte-check": "^1.0.0",
     "svelte-preprocess": "^4.0.0",
     "tslib": "^2.0.0",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "@types/dateformat": "^3.0.1",
+    "apollo-boost": "^0.4.9",
+    "graphql": "^15.3.0",
+    "dateformat": "^3.0.3",
+    "@azure/functions": "^1.2.2",
+    "axios": "^0.20.0",
+    "js-logger": "^1.6.0",
+    "svelte-apollo": "^0.3.0"
   },
   "dependencies": {
-    "@azure/functions": "^1.2.2",
-    "@types/dateformat": "^3.0.1",
-    "axios": "^0.20.0",
-    "dateformat": "^3.0.3",
-    "js-logger": "^1.6.0",
     "sirv-cli": "^1.0.0"
   }
 }

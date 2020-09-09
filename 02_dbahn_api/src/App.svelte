@@ -1,84 +1,85 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	import LocationList from './containers/LocationList/LocationList.svelte';
-	import type { IConfigurationService, IDeutscheBahnApiService, ILocation } from './interfaces';
+	import type { IConfigurationService, IDeutscheBahnApiService } from './interfaces';
 	import {DeutscheBahnApiService} from './services/DeutscheBahnApiService';
 	import defaultLocation from './repository/DefaultLocation';
 	import ArivalBoard from './containers/ArivalBoard/ArivalBoard.svelte';
-	import location from './stores/current-location-store';
+	import location from './stores/station-store';
 	import dateFormat from 'dateformat';
 	import Clock from './components/Clock/Clock.svelte';
-import ApiStatus from './components/ApiStatus/ApiStatus.svelte';
-
+	import ApiStatus from './components/ApiStatus/ApiStatus.svelte';
+	import ApolloClient from 'apollo-boost';
+	import { createHttpLink } from "apollo-link-http";
+	import { setClient } from 'svelte-apollo';
+	import type { HttpOptions } from "apollo-link-http-common";
+	import StationSelect from './containers/StationSelect/StationSelect.svelte';
+	import {activeComponent, componentsAvailable} from './stores/active-component-store';
+	
 	export let configurationService: IConfigurationService;
 
-	let dbApiService: IDeutscheBahnApiService;
 	let status: 'loading' | 'loaded' = "loading";
-	let showLocationsList: boolean = false;
 	let searchString: string;
+
 	const onFormSubmit = () => {
-		showLocationsList = true;
+		$activeComponent = componentsAvailable.SelectStation;
 	}
 
-	onMount(async ()=> {
+	let dbApiService: IDeutscheBahnApiService;
+
+	onMount(async () => {
 		const token = await configurationService.getBearer();
-		console.log('[App] onMount()', token);
-		dbApiService = new DeutscheBahnApiService(token);
+		const client = new ApolloClient({
+			headers: {
+				authorization: `Bearer ${token}`
+			},
+			uri: configurationService.getGraphQLEndpoint()
+		});
+		dbApiService = new DeutscheBahnApiService(client);
 		status = "loaded";
 	});
 </script>
 
 <div class="container">
-	<div class="wrapper">
-		<div class="location-search-form">
-			<form on:submit|preventDefault={onFormSubmit}>
-				<input placeholder="Find location" class="station-input" bind:value={searchString} on:blur={()=>{
-					(async()=>{
-						setTimeout(()=>{
-							showLocationsList = false;
-							searchString = '';
-						}, 100)
-					})();
-				}} />
-			</form>
-		</div>
-		<div class="main">
-			{#if status === "loading"}
-				<div>
-					Loading ...
+	<div class="location-search-form">
+		<form on:submit|preventDefault={onFormSubmit}>
+			<input placeholder="Find location" class="station-input" bind:value={searchString} on:blur={()=>{
+				(async()=>{
+					setTimeout(()=>{
+						$activeComponent = componentsAvailable.None;
+						searchString = '';
+					}, 100)
+				})();
+			}} />
+		</form>
+	</div>
+	<div class="main">
+		{#if status === "loading"}
+			<div>
+				Connecting to DB API ...
+			</div>
+		{:else}
+			<div class="header">
+				<div class="main-col">
+					{$location ? $location.name : '...'}
 				</div>
-			{:else}
-				<div class="header">
-					<div class="main-col">
-						{$location ? $location.name : '...'}
-					</div>
-					<div class="secondary-col">
-						<Clock />
+				<div class="secondary-col">
+					<Clock />
+					{#if dbApiService}
 						<ApiStatus dbApiService={dbApiService} />
-					</div>
+					{/if}
 				</div>
-				{#if showLocationsList}
-					<LocationList dbApiService={dbApiService} name={searchString} />			
-				{/if}
-				{#if $location}
-					<ArivalBoard dbApiService={dbApiService} location={$location} />
-				{/if}
+			</div>
+			{#if $activeComponent === componentsAvailable.SelectStation}
+				<StationSelect dbApiService={dbApiService} searchString={searchString} />			
 			{/if}
-		</div>
+		{/if}
 	</div>
 </div>
 
 <style>
 	.container {
-		width:100%;
-		height:100%;
-		display:flex;
-		justify-content:center;
-		align-items:center;
-	}
-
-	.wrapper {
-		width: 60%;
+		width:60%;
+		margin: 10% auto 0;
 	}
 
 	.location-search-form {

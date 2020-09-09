@@ -1,69 +1,64 @@
 import axios from 'axios';
-import type { IDeutscheBahnApiService, ILocation, IArivalBoardItem } from "../interfaces";
+import type { IDeutscheBahnApiService, IStation, IArivalBoardItem } from "../interfaces";
+import {query} from 'svelte-apollo';
 import Logger from 'js-logger';
-import dateFormat from 'dateformat';
-import { MockDeutscheBahnApiService } from './MockDeutscheBahnApiService';
+import type {ApolloClient} from 'apollo-boost';
+import { FIND_LOCATION_BY_NAME } from '../queries/findLocationByName';
+
 const LOG_SOURCE = 'DeutscheBahnApiService';
 
 export class DeutscheBahnApiService implements IDeutscheBahnApiService {
-  private url: string = 'https://api.deutschebahn.com/freeplan/v1';
-  private mockService: IDeutscheBahnApiService = new MockDeutscheBahnApiService();
 
-  constructor(private bearer: string) {
-    Logger.info(`[${LOG_SOURCE}][${bearer}]`);
+  constructor(private client: ApolloClient<any>) {
+    Logger.info(`[${LOG_SOURCE}]`);
   }
 
   public async checkApiAvailabillity(): Promise<boolean> {
-    return axios.get(`${this.url}`).then(resolve => true).catch(reject => {
-      if (reject.response.status === 401) {
-        return true;
-      }
-      return false;
-    });
+    let apiIsAvailable = false;
+    try {
+      await axios.get(`https://api.deutschebahn.com/freeplan/v1`);
+      apiIsAvailable = true;
+    } catch (error) {
+      apiIsAvailable = error.response.status === 401 ? true : false;
+    } finally {
+      Logger.info(`[${LOG_SOURCE}] API available - ${apiIsAvailable}`);
+      return apiIsAvailable;
+    }
   }
   
-  public async getArivalBoard(location: ILocation, time: Date): Promise<IArivalBoardItem[]> {
+  public async getArivalBoard(station: IStation, time: Date): Promise<IArivalBoardItem[]> {
     Logger.info(`[${LOG_SOURCE}] getArivalBoard()`);
     let data: IArivalBoardItem[];
     try {
-      data = await this.request(`arrivalBoard/${location.id}?date=${dateFormat(time, 'yyyy-mm-dd%3AHH:MM')}`);
+      // data = await this.request(`arrivalBoard/${location.id}?date=${dateFormat(time, 'yyyy-mm-dd%3AHH:MM')}`);
+
     } catch (error) {
-      Logger.warn(`[${LOG_SOURCE}] api endpoint is unavailable, using mock service instead!`, error);
-      const {mockService} = this;
-      data = await mockService.getArivalBoard(location, time);
+      Logger.warn(`[${LOG_SOURCE}] api endpoint is unavailable`, error);
     } finally {
       Logger.info(`[${LOG_SOURCE}]`, data);
       return data.slice(0,5);
     }
   }
 
-  public async findLocation(name): Promise<ILocation[]> {
-    let data: ILocation[];
+  public async findStation(searchString): Promise<IStation[]> {
+    let data: IStation[];
     try {
-      data = await this.request(`location/${name}`);
-    } catch (error) {
-      Logger.warn(`[${LOG_SOURCE}] api endpoint is unavailbale, using mock service instead!`, error);
-      const {mockService} = this;
-      data = await mockService.findLocation(name);
-    } finally {
-      Logger.info(`[${LOG_SOURCE}] findLocation(${name})`, data);
-      return data.slice(0,5);
-    }
-  }
-
-  private async request<TData>(endpoint: string = ''): Promise<TData> {
-    Logger.info(`[${LOG_SOURCE}] /${endpoint}`);
-    try {
-      const {bearer, url} = this;
-      const response = await axios.get(`${url}/${endpoint}`,{
-        headers:{
-          "Authorization": `Bearer ${bearer}`,
-          "Accept": 'application/json'
+      const {client} = this;
+      const locations = await query(client, { 
+        query: FIND_LOCATION_BY_NAME,
+        variables: {
+          searchString
         }
       });
-      return response.data;
+      const result = await locations.result();
+      console.log('result', result);
+      data = result.data.search.stations as IStation[];
+
     } catch (error) {
-      throw new Error(`Service is unavailable`);
+      Logger.warn(`[${LOG_SOURCE}] api endpoint is unavailbale`, error);
+    } finally {
+      Logger.info(`[${LOG_SOURCE}] findLocation(${name})`, data);
+      return data;
     }
   }
 }

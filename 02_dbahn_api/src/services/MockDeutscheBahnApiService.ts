@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { IDeutscheBahnApiService, ILocation, IArivalBoardItem } from "../interfaces";
+import type { IDeutscheBahnApiService, IArivalBoardItem, IStation } from "../interfaces";
 import dateFormat from 'dateformat';
 const LOG_SOURCE = 'MockDeutscheBahnApiService';
 
@@ -9,7 +9,7 @@ export class MockDeutscheBahnApiService implements IDeutscheBahnApiService {
     return true;
   }
   
-  public async getArivalBoard(location: ILocation, time: Date): Promise<IArivalBoardItem[]> {
+  public async getArivalBoard(station: IStation, time: Date): Promise<IArivalBoardItem[]> {
     return [
       {
         "name": "ICE 1099",
@@ -36,44 +36,44 @@ export class MockDeutscheBahnApiService implements IDeutscheBahnApiService {
     ];
   }
 
-  public async findLocation(name): Promise<ILocation[]> {
+  public async findStation(name): Promise<IStation[]> {
     return [
-      {
-        "name": "Heilbronn Hbf",
-        "lon": 9.207714,
-        "lat": 49.143308,
-        "id": 8000157
-      },
-      {
-        "name": "Heidelberg Hbf",
-        "lon": 8.675444,
-        "lat": 49.403564,
-        "id": 8000156
-      },
-      {
-        "name": "Heide(Holst)",
-        "lon": 9.10103,
-        "lat": 54.193565,
-        "id": 8000155
-      },
-      {
-        "name": "Heidelberg Alte Eppelheimer Str./Emil-Maier-Str.",
-        "lon": 8.673116,
-        "lat": 49.406045,
-        "id": 8089495
-      },
-      {
-        "name": "Weilheim(Oberbay)",
-        "lon": 11.142858,
-        "lat": 47.845365,
-        "id": 8000220
-      },
-      {
-        "name": "Weil am Rhein",
-        "lon": 7.608416,
-        "lat": 47.593972,
-        "id": 8006272
-      }
+      // {
+      //   "name": "Heilbronn Hbf",
+      //   "lon": 9.207714,
+      //   "lat": 49.143308,
+      //   "id": 8000157
+      // },
+      // {
+      //   "name": "Heidelberg Hbf",
+      //   "lon": 8.675444,
+      //   "lat": 49.403564,
+      //   "id": 8000156
+      // },
+      // {
+      //   "name": "Heide(Holst)",
+      //   "lon": 9.10103,
+      //   "lat": 54.193565,
+      //   "id": 8000155
+      // },
+      // {
+      //   "name": "Heidelberg Alte Eppelheimer Str./Emil-Maier-Str.",
+      //   "lon": 8.673116,
+      //   "lat": 49.406045,
+      //   "id": 8089495
+      // },
+      // {
+      //   "name": "Weilheim(Oberbay)",
+      //   "lon": 11.142858,
+      //   "lat": 47.845365,
+      //   "id": 8000220
+      // },
+      // {
+      //   "name": "Weil am Rhein",
+      //   "lon": 7.608416,
+      //   "lat": 47.593972,
+      //   "id": 8006272
+      // }
     ];
   }
 
