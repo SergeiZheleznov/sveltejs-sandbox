@@ -18,7 +18,6 @@
     const station = el.detail as IStation;
     currentStation.setStation({...station});
     $activeComponent = componentsAvailable.Timetable;
-    console.log('$activeComponent', $activeComponent);
   }
 
   $: {

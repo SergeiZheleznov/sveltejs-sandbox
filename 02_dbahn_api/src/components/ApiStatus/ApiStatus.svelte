@@ -1,7 +1,7 @@
 <script lang="ts">
   import {onMount} from 'svelte';
-  import type { IDeutscheBahnApiService } from "../../interfaces";
-  export let dbApiService: IDeutscheBahnApiService;
+  import type { IDBGraphQlService } from "../../interfaces";
+  export let dbApiService: IDBGraphQlService;
 
   let isServiceAvailable: boolean;
   onMount(async()=>{

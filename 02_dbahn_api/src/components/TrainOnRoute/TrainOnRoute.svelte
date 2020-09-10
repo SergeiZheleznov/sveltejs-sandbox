@@ -1,10 +1,11 @@
 <script lang="ts">
-  import type { ITrainOnRoute } from "../../interfaces";
+  import type { IStation, ITrainOnRoute } from "../../interfaces";
   import dateFormat from 'dateformat';
   import {fade} from 'svelte/transition';
+  import TrainRoute from "../TimeTable/TrainRoute/TrainRoute.svelte";
 
   export let train: ITrainOnRoute;
-
+  export let station: IStation;
 </script>
 
 <div transition:fade class="wrapper">
@@ -12,16 +13,17 @@
     <div class="col-1_3">
       <div class="name">{train.type}</div>
       <div class="origin">
-        {@html train.arrival.stations[0]}
+        <!-- {@html train.departure.stations[0]} -->
       </div>
     </div>
     <div class="col-1_3 track">
-      {train.arrival.platform}
+      <!-- {train.arrival.platform} -->
     </div>
     <div class="col-1_3 time">
-      {dateFormat(train.arrival.time, 'HH:MM')}
+      <!-- {dateFormat(train.arrival.time, 'HH:MM')} -->
     </div>
   </div>
+  <TrainRoute station={station} train={train} />
 </div>
 
 <style>

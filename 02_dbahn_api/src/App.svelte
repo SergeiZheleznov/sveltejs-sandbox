@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
 	import ApolloClient from 'apollo-boost';
-	import type { IConfigurationService, IDeutscheBahnApiService, ITimetableService } from './interfaces';
+	import type { IConfigurationService, IDBGraphQlService, IDBTimetablesService } from './interfaces';
 	import {DeutscheBahnApiService} from './services/DeutscheBahnApiService';
 	import StationSelect from './containers/StationSelect/StationSelect.svelte';
 	import TableHeader from './components/TableHeader/TableHeader.svelte';
@@ -19,8 +19,8 @@
 		$activeComponent = componentsAvailable.SelectStation;
 	}
 
-	let dbApiService: IDeutscheBahnApiService;
-	let dbTimetableService: ITimetableService;
+	let dbApiService: IDBGraphQlService;
+	let dbTimetableService: IDBTimetablesService;
 
 	onMount(async () => {
 		const token = await configurationService.getBearer();
