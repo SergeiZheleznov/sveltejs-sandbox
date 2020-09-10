@@ -1,26 +1,25 @@
 <script lang="ts">
-  import type { IArivalBoardItem } from "../../interfaces";
+  import type { ITrainOnRoute } from "../../interfaces";
   import dateFormat from 'dateformat';
   import {fade} from 'svelte/transition';
 
-  export let item: IArivalBoardItem;
+  export let train: ITrainOnRoute;
 
-  const time = new Date(item.dateTime);
 </script>
 
 <div transition:fade class="wrapper">
   <div class="item">
     <div class="col-1_3">
-      <div class="name">{item.name}</div>
+      <div class="name">{train.type}</div>
       <div class="origin">
-        {@html item.origin}
+        {@html train.arrival.stations[0]}
       </div>
     </div>
     <div class="col-1_3 track">
-      {item.track}
+      {train.arrival.platform}
     </div>
     <div class="col-1_3 time">
-      {dateFormat(time, 'HH:MM')}
+      {dateFormat(train.arrival.time, 'HH:MM')}
     </div>
   </div>
 </div>

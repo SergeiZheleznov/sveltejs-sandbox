@@ -20,6 +20,10 @@ export class ConfigurationService implements IConfigurationService {
   }
 
   public getGraphQLEndpoint(): string {
-    return 'https://api.deutschebahn.com/free1bahnql/v1/graphql';
+    return 'https://api.deutschebahn.com/1bahnql/v1/graphql';
+  }
+
+  public getTimetableApiUrl(): string {
+    return 'https://api.deutschebahn.com/timetables/v1';
   }
 }

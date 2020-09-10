@@ -1,8 +1,7 @@
 import { writable } from 'svelte/store';
 
 export enum componentsAvailable {
-  'ArivalBoard',
-  'DepartureBoard',
+  'Timetable',
   'SelectStation',
   'None'
 }

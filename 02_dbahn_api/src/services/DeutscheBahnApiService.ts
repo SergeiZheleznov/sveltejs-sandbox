@@ -1,13 +1,15 @@
 import axios from 'axios';
-import type { IDeutscheBahnApiService, IStation, IArivalBoardItem } from "../interfaces";
+import type { IDBGraphQlService, IStation } from "../interfaces";
 import {query} from 'svelte-apollo';
 import Logger from 'js-logger';
 import type {ApolloClient} from 'apollo-boost';
-import { FIND_LOCATION_BY_NAME } from '../queries/findLocationByName';
+import { FIND_LOCATIONS_BY_NAME } from '../queries/findLocationsByName';
+import { GET_STATION_BY_PRIMARY_EVA_ID } from '../queries/getStationByPrimaryEvaId';
+import xmlParser from 'fast-xml-parser';
 
 const LOG_SOURCE = 'DeutscheBahnApiService';
 
-export class DeutscheBahnApiService implements IDeutscheBahnApiService {
+export class DeutscheBahnApiService implements IDBGraphQlService {
 
   constructor(private client: ApolloClient<any>) {
     Logger.info(`[${LOG_SOURCE}]`);
@@ -26,26 +28,34 @@ export class DeutscheBahnApiService implements IDeutscheBahnApiService {
     }
   }
   
-  public async getArivalBoard(station: IStation, time: Date): Promise<IArivalBoardItem[]> {
-    Logger.info(`[${LOG_SOURCE}] getArivalBoard()`);
-    let data: IArivalBoardItem[];
+  public async getStationByPrimaryEvaId(primaryEvaId: number): Promise<IStation> {
+    Logger.info(`[${LOG_SOURCE}] getStationByPrimaryEvaId(primaryEvaId = ${primaryEvaId})`);
+    let station: IStation;
     try {
-      // data = await this.request(`arrivalBoard/${location.id}?date=${dateFormat(time, 'yyyy-mm-dd%3AHH:MM')}`);
-
+      const {client} = this;
+      const locations = await query(client, { 
+        query: GET_STATION_BY_PRIMARY_EVA_ID,
+        variables: {
+          primaryEvaId
+        }
+      });
+      const result = await locations.result();
+      console.log(result);
+      station = result.data.stationWithEvaId as IStation;
     } catch (error) {
       Logger.warn(`[${LOG_SOURCE}] api endpoint is unavailable`, error);
     } finally {
-      Logger.info(`[${LOG_SOURCE}]`, data);
-      return data.slice(0,5);
+      Logger.info(`[${LOG_SOURCE}]`, station);
+      return station;
     }
   }
 
-  public async findStation(searchString): Promise<IStation[]> {
+  public async getStationsByName(searchString): Promise<IStation[]> {
     let data: IStation[];
     try {
       const {client} = this;
       const locations = await query(client, { 
-        query: FIND_LOCATION_BY_NAME,
+        query: FIND_LOCATIONS_BY_NAME,
         variables: {
           searchString
         }
@@ -57,7 +67,7 @@ export class DeutscheBahnApiService implements IDeutscheBahnApiService {
     } catch (error) {
       Logger.warn(`[${LOG_SOURCE}] api endpoint is unavailbale`, error);
     } finally {
-      Logger.info(`[${LOG_SOURCE}] findLocation(${name})`, data);
+      Logger.info(`[${LOG_SOURCE}] getStationsByName(${name})`, data);
       return data;
     }
   }

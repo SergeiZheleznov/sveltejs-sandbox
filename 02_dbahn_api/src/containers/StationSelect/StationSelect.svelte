@@ -1,31 +1,29 @@
 <script lang="ts">
-  import LocationItem from "../../components/LocationItem/LocationItem.svelte";
-  import type { IDeutscheBahnApiService, ILocation, IStation } from "../../interfaces";
+  import type { IDBGraphQlService, IStation } from "../../interfaces";
   import {onMount} from 'svelte';
   import currentStation from '../../stores/station-store';
-  import { getClient, query } from 'svelte-apollo';
-  import { FIND_LOCATION_BY_NAME } from '../../queries/findLocationByName';
   import Station from "../../components/Station/Station.svelte";
-
+  import {activeComponent, componentsAvailable} from '../../stores/active-component-store';
+  
   export let searchString: string;
-  export let dbApiService: IDeutscheBahnApiService;
-  // const client = getClient();
+  export let dbApiService: IDBGraphQlService;
 
   let stations: IStation[] = [];
 
   onMount(async() => {
-    // stations = await findStations(searchString);
-    stations = await dbApiService.findStation(searchString);
+    stations = await dbApiService.getStationsByName(searchString);
   });
 
   const onItemSelect = (el) => {
     const station = el.detail as IStation;
     currentStation.setStation({...station});
+    $activeComponent = componentsAvailable.Timetable;
+    console.log('$activeComponent', $activeComponent);
   }
 
   $: {
     (async()=>{
-      stations = await dbApiService.findStation(searchString);
+      stations = await dbApiService.getStationsByName(searchString);
     })
   }
 </script>

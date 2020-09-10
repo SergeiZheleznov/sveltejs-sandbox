@@ -1,5 +1,3 @@
-export * from './IDeutscheBahnApiService';
-export * from './Ilocation';
+export * from './GraphQL';
+export * from './Timetables';
 export * from './IConfigurationService';
-export * from './IArivalBoardItem';
-export * from './IStation';

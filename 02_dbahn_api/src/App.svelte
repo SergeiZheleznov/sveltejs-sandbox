@@ -1,16 +1,15 @@
 <script lang="ts">
-	import {onMount} from 'svelte';
-	import type { IConfigurationService, IDeutscheBahnApiService } from './interfaces';
-	import {DeutscheBahnApiService} from './services/DeutscheBahnApiService';
-	import ArivalBoard from './containers/ArivalBoard/ArivalBoard.svelte';
+	import { onMount, setContext } from 'svelte';
 	import ApolloClient from 'apollo-boost';
-	import { createHttpLink } from "apollo-link-http";
-	import { setClient } from 'svelte-apollo';
-	import type { HttpOptions } from "apollo-link-http-common";
+	import type { IConfigurationService, IDeutscheBahnApiService, ITimetableService } from './interfaces';
+	import {DeutscheBahnApiService} from './services/DeutscheBahnApiService';
 	import StationSelect from './containers/StationSelect/StationSelect.svelte';
+	import TableHeader from './components/TableHeader/TableHeader.svelte';
+	import Timetable from './containers/Timetable/Timetable.svelte';
 	import {activeComponent, componentsAvailable} from './stores/active-component-store';
-import TableHeader from './components/TableHeader/TableHeader.svelte';
-	
+	import currentStation from './stores/station-store';
+	import { TimetableService } from './services';
+
 	export let configurationService: IConfigurationService;
 
 	let status: 'loading' | 'loaded' = "loading";
@@ -21,6 +20,7 @@ import TableHeader from './components/TableHeader/TableHeader.svelte';
 	}
 
 	let dbApiService: IDeutscheBahnApiService;
+	let dbTimetableService: ITimetableService;
 
 	onMount(async () => {
 		const token = await configurationService.getBearer();
@@ -31,6 +31,7 @@ import TableHeader from './components/TableHeader/TableHeader.svelte';
 			uri: configurationService.getGraphQLEndpoint()
 		});
 		dbApiService = new DeutscheBahnApiService(client);
+		dbTimetableService = new TimetableService(configurationService.getTimetableApiUrl(), token);
 		status = "loaded";
 	});
 </script>
@@ -49,7 +50,9 @@ import TableHeader from './components/TableHeader/TableHeader.svelte';
 		{:else}
 			<TableHeader dbApiService={dbApiService} />
 			{#if $activeComponent === componentsAvailable.SelectStation}
-				<StationSelect dbApiService={dbApiService} searchString={searchString} />			
+				<StationSelect dbApiService={dbApiService} searchString={searchString} />
+			{:else if $activeComponent === componentsAvailable.Timetable}
+				<Timetable dbTimetableService={dbTimetableService} station={$currentStation} />
 			{/if}
 		{/if}
 	</div>

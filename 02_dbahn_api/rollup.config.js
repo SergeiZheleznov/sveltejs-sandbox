@@ -48,7 +48,7 @@ export default {
           ...config().parsed // attached the .env config
         }
       }),
-    }),
+		}),
 		svelte({
 			dev: !production,
 			css: css => {

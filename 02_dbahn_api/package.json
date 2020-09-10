@@ -22,7 +22,7 @@
     "svelte-check": "^1.0.0",
     "svelte-preprocess": "^4.0.0",
     "tslib": "^2.0.0",
-    "typescript": "^3.9.3",
+    "typescript": "4.0.2",
     "@types/dateformat": "^3.0.1",
     "apollo-boost": "^0.4.9",
     "graphql": "^15.3.0",
@@ -33,6 +33,7 @@
     "svelte-apollo": "^0.3.0"
   },
   "dependencies": {
+    "fast-xml-parser": "^3.17.4",
     "sirv-cli": "^1.0.0"
   }
 }
