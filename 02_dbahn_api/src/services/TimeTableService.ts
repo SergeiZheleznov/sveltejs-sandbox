@@ -32,7 +32,21 @@ export class TimetableService implements IDBTimetablesService {
         ignoreAttributes: false
       });
       Logger.info(`[${LOG_SOURCE}] retrieved parsed xml`, obj);
-      data = obj?.timetable?.s.map( el => this.convertXmlToObj(el));
+      data = obj?.timetable?.s.map( el => this.convertXmlToObj(el))
+        .filter((el: ITrainOnRoute) => {
+          if (el.departure && el.departure.time) {
+            return el.departure.time > new Date();
+          }
+          return true;
+        })
+        .sort( (a: ITrainOnRoute, b: ITrainOnRoute) => {
+          if (!a.arrival && b.arrival) {
+            return false;
+          } else if (a.arrival && !b.arrival) {
+            return true;
+          }
+          return a.arrival.time > b.arrival.time;
+        });
     } catch (error) {
       Logger.warn(`[${LOG_SOURCE}] api endpoint is unavailbale`, error);
     } finally {

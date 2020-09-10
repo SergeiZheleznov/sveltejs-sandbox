@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { IStation, IDBTimetablesService, ITrainOnRoute } from "../../interfaces";
   import { getContext, onMount } from 'svelte';
-import TrainOnRoute from "../../components/TrainOnRoute/TrainOnRoute.svelte";
+  import TrainOnRoute from "../../components/TrainOnRoute/TrainOnRoute.svelte";
   
   export let station: IStation;
   export let dbTimetableService: IDBTimetablesService;
@@ -21,13 +21,11 @@ import TrainOnRoute from "../../components/TrainOnRoute/TrainOnRoute.svelte";
 </script>
 
 <svelte:head>
-  <title>Arival Board:!!!! {station && station.name ? station.name : '..'}</title>
+  <title>Arival Board: {station && station.name ? station.name : '..'}</title>
 </svelte:head>
 
 <section>
-  test
   {#if status == "loaded"}
-  loaded
     {#each trainsOnRoute as train}
       <TrainOnRoute station={station} train={train} />
     {/each}
