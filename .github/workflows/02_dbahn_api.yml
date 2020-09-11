@@ -1,0 +1,38 @@
+name: 02_dbahn_api
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '02_dbahn_api/**'
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      working-directory: './02_dbahn_api'
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+      working-directory: ${{env.working-directory}}
+    - run: npm run build
+      env:
+        API_TOKEN: ${{ secrets.API_TOKEN }}
+      working-directory: ${{env.working-directory}}
+
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@3.5.9
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages # The branch the action should deploy to.
+        FOLDER: '02_dbahn_api/public' # The folder the action should deploy.
+        TARGET_FOLDER: './svelte-sandbox/dbapi'
