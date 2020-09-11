@@ -11,6 +11,14 @@ import replace from '@rollup/plugin-replace';
 const production = !process.env.ROLLUP_WATCH;
 
 console.log('Enviroment VARS', config().parsed);
+const env = {
+	isProd: production,
+	...config().parsed
+}
+if (process.env.API_TOKEN) {
+	console.log('Token was set');
+	env.API_TOKEN = process.env.API_TOKEN;
+}
 
 function serve() {
 	let server;
@@ -43,10 +51,7 @@ export default {
 	plugins: [
     replace({  
       __app: JSON.stringify({
-        env: {
-          isProd: production,
-          ...config().parsed // attached the .env config
-        }
+        env
       }),
 		}),
 		svelte({
