@@ -14,17 +14,9 @@
 
   onMount(async ()=> {
     const response = await dbTimetableService.getTrainsOnRoute(station.primaryEvaId.toString());
-    trainsOnRoute = [...response.sort((a, b)=> {
-      let result = 0;
-      if (!a?.arrival?.time) {
-        result = 1;
-      } else if (!b?.arrival?.time) {
-        result = -1;
-      } else if (a.arrival.time && b.arrival.time) {
-        result = a.arrival.time > b.arrival.time ? 1 : -1;
-      }
-      return result;
-    })];
+    trainsOnRoute = [...response
+      .filter(el => el.arrival && el.arrival.time)
+      .sort((a, b) => a.arrival.time > b.arrival.time ? 1 : -1)];
     console.log('trainsOnRoute', trainsOnRoute);
     status = "loaded"
   });

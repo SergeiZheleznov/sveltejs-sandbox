@@ -9,6 +9,7 @@
 	import {activeComponent, componentsAvailable} from './stores/active-component-store';
 	import currentStation from './stores/station-store';
 	import { TimetableService } from './services';
+	import DbLogo from './components/DBLogo/DBLogo.svelte';
 
 	export let configurationService: IConfigurationService;
 
@@ -36,7 +37,9 @@
 	});
 </script>
 
+<div id="header"><div></div></div>
 <div class="container">
+	<DbLogo />
 	<div class="location-search-form">
 		<form on:submit|preventDefault={onFormSubmit}>
 			<input placeholder="Find location" class="station-input" bind:value={searchString} />
@@ -60,8 +63,9 @@
 
 <style>
 	.container {
-		width:60%;
-		margin: 10% auto 0;
+		width:80%;
+		margin: 0 auto;
+		padding: 2rem 0;
 	}
 
 	.location-search-form {
@@ -92,11 +96,22 @@
 		color: #ccc;
 	}
 
-	:global(body) {
+	#header {
+		width: 100%;
+		height: 80%;
+		position: absolute;
+		top: 0;
+		z-index: -1;
+		opacity: .9;
 		background-repeat: no-repeat;
 		background-size: cover;
-		background-attachment: fixed;
+		background-position: center;
 	}
 
-		
+	#header>div {
+		background: rgb(255,255,255);
+		background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(0,0,0,0) 100%);
+		height: 100%;
+	}
+
 </style>

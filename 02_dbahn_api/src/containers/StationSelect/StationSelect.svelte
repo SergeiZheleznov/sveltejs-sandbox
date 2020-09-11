@@ -17,7 +17,8 @@
   const onItemSelect = (el) => {
     const station = el.detail as IStation;
     console.log('station.picture.url',station.picture.url);
-    document.querySelector('body').style.backgroundImage = station.picture.url ? `url(${station.picture.url})` : '';
+    document.getElementById('header').style.backgroundImage = station.picture.url ? `url(${station.picture.url})` : '';
+    //document.querySelector('#header').innerHTML = `<img src="${station.picture.url}" />`;
     currentStation.setStation({...station});
     $activeComponent = componentsAvailable.Timetable;
   }

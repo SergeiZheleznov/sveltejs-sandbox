@@ -2,9 +2,9 @@
   import Clock from '../../components/Clock/Clock.svelte';
   import ApiStatus from '../../components/ApiStatus/ApiStatus.svelte';
   import location from '../../stores/station-store';
-  import type { IDeutscheBahnApiService } from '../../interfaces';
+  import type { IDBGraphQlService } from '../../interfaces';
 
-  export let dbApiService: IDeutscheBahnApiService;
+  export let dbApiService: IDBGraphQlService;
 </script>
 <div class="header">
   <div class="main-col">

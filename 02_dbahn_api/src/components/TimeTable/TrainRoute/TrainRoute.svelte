@@ -33,12 +33,11 @@
 
 <style>
   .wrapper {
-    border: 1px solid lightgray;
-    padding: .1rem;
+    display: flex;
+    gap: .5rem;
   }
   .wrapper>div {
-    display: inline-block;
-    padding: .3rem;
+    padding: .2rem;
   }
   .wrapper .current {
     background-color: white;
