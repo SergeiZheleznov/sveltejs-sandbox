@@ -4,5 +4,5 @@
 
 - https://developer.deutschebahn.com/
 - https://developer.deutschebahn.com/store/apis/info?name=Fahrplan-Free&version=v1&provider=DBOpenData
-- https://zealous-forest-0e9dd1703.azurestaticapps.net/
+- [Test App](https://sergeizheleznov.github.io/sveltejs-sandbox/dbapi/)
 - [GraphQl Playground](https://bahnql.herokuapp.com/graphql)
