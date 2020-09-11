@@ -92,5 +92,11 @@
 		color: #ccc;
 	}
 
+	:global(body) {
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-attachment: fixed;
+	}
 
+		
 </style>

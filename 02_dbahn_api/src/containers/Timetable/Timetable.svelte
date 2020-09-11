@@ -10,10 +10,21 @@
   let status: "loading" | "loaded" | "error" = "loading";
   let errorMessage: string = null;
 
-  let trainsOnRoute: ITrainOnRoute[] = [];
+  let trainsOnRoute: ITrainOnRoute[];
 
   onMount(async ()=> {
-    trainsOnRoute = await dbTimetableService.getTrainsOnRoute(station.primaryEvaId.toString());
+    const response = await dbTimetableService.getTrainsOnRoute(station.primaryEvaId.toString());
+    trainsOnRoute = [...response.sort((a, b)=> {
+      let result = 0;
+      if (!a?.arrival?.time) {
+        result = 1;
+      } else if (!b?.arrival?.time) {
+        result = -1;
+      } else if (a.arrival.time && b.arrival.time) {
+        result = a.arrival.time > b.arrival.time ? 1 : -1;
+      }
+      return result;
+    })];
     console.log('trainsOnRoute', trainsOnRoute);
     status = "loaded"
   });
@@ -26,9 +37,13 @@
 
 <section>
   {#if status == "loaded"}
-    {#each trainsOnRoute as train}
-      <TrainOnRoute station={station} train={train} />
-    {/each}
+    {#if trainsOnRoute && trainsOnRoute.length}
+      {#each trainsOnRoute as train}
+        <TrainOnRoute station={station} train={train} />
+      {/each}
+    {:else}
+      <div>No trains found</div>
+    {/if}
   {:else if status == "loading"}
     <div class="message">
       loading...

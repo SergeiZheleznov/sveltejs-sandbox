@@ -15,9 +15,9 @@ import type { space } from 'svelte/internal';
 
 <div class="item">
   <div class="wrapper" class:active="{active}">
-    <div class="image">
+    <!-- <div class="image">
       <img src="{station.picture.url}" alt="{station.name}" />
-    </div>
+    </div> -->
     <div class="meta">
       <span>{station.name}</span>
       <div class="actions">
