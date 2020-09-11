@@ -24,7 +24,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
       working-directory: ${{env.working-directory}}
-    - run: npm run build
+    - name: Building example with token ${{ secrets.API_TOKEN }}
+      run: npm run build
       env:
         API_TOKEN: ${{ secrets.API_TOKEN }}
       working-directory: ${{env.working-directory}}
