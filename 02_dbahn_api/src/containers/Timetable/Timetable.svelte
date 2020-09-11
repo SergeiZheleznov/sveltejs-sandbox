@@ -32,7 +32,7 @@
 </script>
 
 <svelte:head>
-  <title>Arival Board: {station && station.name ? station.name : '..'}</title>
+  <title>Board: {station && station.name ? station.name : '..'}</title>
 </svelte:head>
 
 <section>
