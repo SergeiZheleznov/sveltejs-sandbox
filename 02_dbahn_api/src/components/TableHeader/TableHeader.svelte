@@ -1,18 +1,14 @@
 <script lang="ts">
   import Clock from '../../components/Clock/Clock.svelte';
-  import ApiStatus from '../../components/ApiStatus/ApiStatus.svelte';
   import location from '../../stores/station-store';
-  import type { IDBGraphQlService } from '../../interfaces';
 
-  export let dbApiService: IDBGraphQlService;
 </script>
 <div class="header">
   <div class="main-col">
-    {$location ? $location.name : '...'}
+    <a href="/">{$location ? $location.name : '...'}</a>
   </div>
   <div class="secondary-col">
     <Clock />
-    <ApiStatus dbApiService={dbApiService} />
   </div>
 </div>
 

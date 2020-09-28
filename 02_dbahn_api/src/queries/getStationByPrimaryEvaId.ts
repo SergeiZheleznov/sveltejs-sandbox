@@ -5,6 +5,11 @@ export const GET_STATION_BY_PRIMARY_EVA_ID = gql`
     stationWithEvaId(
       evaId: $primaryEvaId
     ){
+      name
+      primaryEvaId
+      picture {
+        url
+      }
       location {
         latitude
         longitude

@@ -1,5 +1,5 @@
 export interface IConfigurationService {
-  getBearer(): Promise<string>;
+  getBearer(): string;
   getGraphQLEndpoint(): string;
   getTimetableApiUrl(): string;
 }

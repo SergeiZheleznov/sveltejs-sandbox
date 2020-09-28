@@ -64,6 +64,7 @@ export class TimetableService implements IDBTimetablesService {
       const type = item.tl.o ? item.tl.o : '-';
       return { arrival, departure, type }
     } catch (error) {
+      console.log('convertXmlToObj', error);
       return;
     }
   }

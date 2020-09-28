@@ -1,34 +1,41 @@
 <script lang="ts">
-  import type { IDBGraphQlService, IStation } from "../../interfaces";
-  import {onMount} from 'svelte';
+  import type { IAppContext, IStation } from "../../interfaces";
+  import {onMount, getContext} from 'svelte';
   import currentStation from '../../stores/station-store';
   import Station from "../../components/Station/Station.svelte";
-  import {activeComponent, componentsAvailable} from '../../stores/active-component-store';
+
+  const ctx = getContext<IAppContext>('appContext');
+  let searchString: string;
   
-  export let searchString: string;
-  export let dbApiService: IDBGraphQlService;
+  const { dbApiService } = ctx;
 
   let stations: IStation[] = [];
 
-  onMount(async() => {
+  const updateItems = async () => {
     stations = await dbApiService.getStationsByName(searchString);
+  };
+
+  onMount(async() => {
+    await updateItems();
   });
 
   const onItemSelect = (el) => {
     const station = el.detail as IStation;
     console.log('station.picture.url',station.picture.url);
     document.getElementById('header').style.backgroundImage = station.picture.url ? `url(${station.picture.url})` : '';
-    //document.querySelector('#header').innerHTML = `<img src="${station.picture.url}" />`;
     currentStation.setStation({...station});
-    $activeComponent = componentsAvailable.Timetable;
   }
 
-  $: {
-    (async()=>{
-      stations = await dbApiService.getStationsByName(searchString);
-    })
-  }
+  const onFormSubmit = async () => {
+		await updateItems();
+	}
 </script>
+
+<div class="location-search-form">
+  <form on:submit|preventDefault={onFormSubmit}>
+    <input name="q" placeholder="Find location" class="station-input" bind:value={searchString} />
+  </form>
+</div>
 
 <section>
   {#each stations as station}
@@ -40,4 +47,22 @@
   section {
     padding: .3rem 0;
   }
+	.location-search-form {
+		margin-bottom: .3rem;
+	}
+
+	.station-input {
+		border: 1px solid #ccc;
+		color: #444;
+		padding: 10px;
+		width: 100%;
+		margin: 0;
+		background-color: white;
+		outline: transparent;
+		box-sizing: border-box;
+		font-size: 2rem;
+	}
+	.station-input::placeholder {
+		color: #ccc;
+	}
 </style>
