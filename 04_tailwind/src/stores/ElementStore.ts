@@ -6,11 +6,11 @@ export interface IElementStore {
 }
 
 export class ElementStore implements IElementStore {
-
+  public elements: IElement[] = [];
   constructor(private apiService: IApiService){}
 
   public async getElements() {
     this.elements = await this.apiService.getElements();
   }
-  public elements: IElement[];
+  
 }

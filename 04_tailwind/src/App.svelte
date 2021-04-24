@@ -1,7 +1,7 @@
 <script lang="ts">
   import { setContext } from "svelte";
   import { writable } from "svelte/store";
-  import ElementList from "./ElementList.svelte";
+  import ElementSection from "./ElementSection.svelte";
   import { ELEMENT_STORE_KEY } from "./models";
   import type { IAppContext } from "./models/IAppContext";
   import { ApiService } from "./services/ApiService";
@@ -18,7 +18,7 @@
 <main class="border-indigo-600">
   <h1>Hello {title}!</h1>
 
-  <ElementList />
+  <ElementSection />
 
   <p>
     Visit the <a
