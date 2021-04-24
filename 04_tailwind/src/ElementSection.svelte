@@ -2,14 +2,23 @@
   import { getContext, onMount } from "svelte";
   import Element from "./Element.svelte";
   import { ELEMENT_STORE_KEY } from "./models";
+  import type { IElement } from "./models";
   import type { IAppContext } from "./models/IAppContext";
   const { elementStore } = getContext<IAppContext>(ELEMENT_STORE_KEY);
+
+  let elements: IElement[] = [];
   let loading: boolean = false;
 
+  elementStore.loading.subscribe((value) => {
+    loading = value;
+  });
+
+  elementStore.elements.subscribe((value) => {
+    elements = value;
+  });
+
   const fetchElements = async () => {
-    loading = true;
-    await $elementStore.getElements();
-    loading = false;
+    await elementStore.getElements();
   };
 
   onMount(async () => {
@@ -44,12 +53,24 @@
           >
             Notify me
           </button>
+          <button
+            type="button"
+            on:click={async () => {
+              elementStore.addElement({
+                id: "asd",
+                text: "sksdes",
+              });
+            }}
+            class="w-full bg-indigo-600 px-4 py-2 border border-transparent rounded-md flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:inline-flex"
+          >
+            Add
+          </button>
         </div>
       </div>
     </div>
     <div class="mt-6 pt-10 grid gap-16 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
       {#if !loading}
-        {#each $elementStore.elements as el}
+        {#each elements as el}
           <Element element={el} />
         {/each}
       {:else}

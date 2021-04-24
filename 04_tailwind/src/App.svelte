@@ -1,6 +1,5 @@
 <script lang="ts">
   import { setContext } from "svelte";
-  import { writable } from "svelte/store";
   import ElementSection from "./ElementSection.svelte";
   import { ELEMENT_STORE_KEY } from "./models";
   import type { IAppContext } from "./models/IAppContext";
@@ -8,7 +7,7 @@
   import { ElementStore } from "./stores";
 
   const apiService = new ApiService("%APP_API_URL%");
-  const elementStore = writable(new ElementStore(apiService));
+  const elementStore = new ElementStore(apiService);
 
   setContext<IAppContext>(ELEMENT_STORE_KEY, { elementStore });
 
