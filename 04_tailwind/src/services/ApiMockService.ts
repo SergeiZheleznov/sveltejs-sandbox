@@ -7,8 +7,8 @@ export class ApiMockService implements IApiService {
     for (let id = 0; id < 10; id++) {
       res.push(
       {
-        id,
-        name: `Element ${id}`
+        id: `${id}`,
+        text: `Element ${id}`
       });
     }
 

@@ -50,7 +50,10 @@ export default {
       preprocess: sveltePreprocess({
         sourceMap: !production,
         postcss: true,
-        replace: [["%APP_NAME%", process.env.APP_NAME]],
+        replace: [
+          ["%APP_API_URL%", process.env.APP_API_URL],
+          ["%APP_NAME%", process.env.APP_NAME],
+        ],
       }),
       compilerOptions: {
         // enable run-time checks when not in production

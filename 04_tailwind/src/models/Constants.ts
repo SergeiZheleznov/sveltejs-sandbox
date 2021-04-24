@@ -1,0 +1,1 @@
+export const ELEMENT_STORE_KEY = 'ELEMENT_STORE';

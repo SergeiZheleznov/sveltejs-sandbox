@@ -1,4 +1,4 @@
 export interface IElement {
-  id: number;
-  name: string;
+  id: string;
+  text: string;
 }

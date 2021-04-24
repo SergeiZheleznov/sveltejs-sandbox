@@ -1,25 +1,24 @@
 <script lang="ts">
-  import type { Writable } from "svelte/store";
-  import type { IElementStore } from "./stores";
+  import { setContext } from "svelte";
+  import { writable } from "svelte/store";
+  import ElementList from "./ElementList.svelte";
+  import { ELEMENT_STORE_KEY } from "./models";
+  import type { IAppContext } from "./models/IAppContext";
+  import { ApiService } from "./services/ApiService";
+  import { ElementStore } from "./stores";
 
-  export let elementStore: Writable<IElementStore>;
+  const apiService = new ApiService("%APP_API_URL%");
+  const elementStore = writable(new ElementStore(apiService));
+
+  setContext<IAppContext>(ELEMENT_STORE_KEY, { elementStore });
+
   const title = "%APP_NAME%";
 </script>
 
 <main class="border-indigo-600">
-  <h1>Hello !</h1>
+  <h1>Hello {title}!</h1>
 
-  {#await $elementStore.getElements()}
-    <p>waiting for the promise to resolve...</p>
-  {:then}
-    {#each $elementStore.elements as el}
-      <div>
-        {el.name}
-      </div>
-    {/each}
-  {:catch error}
-    <p>Something went wrong: {error.message}</p>
-  {/await}
+  <ElementList />
 
   <p>
     Visit the <a
