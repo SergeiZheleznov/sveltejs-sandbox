@@ -17,7 +17,10 @@ export class ApiService implements IApiService {
 
   constructor (private api_url: string) {}
   public async getElements(){
-    const response: IResponse = await axios.get(this.api_url, {
+
+    const amount = 15;
+
+    const response: IResponse = await axios.get(`${this.api_url}/random/?amount=${amount}`, {
       headers:{
         'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json',
