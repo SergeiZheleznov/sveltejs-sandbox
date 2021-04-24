@@ -1,5 +1,6 @@
 <script lang="ts">
   export let name: string;
+  const title = "%APP_NAME%";
 </script>
 
 <main class="border-indigo-600">
@@ -26,7 +27,7 @@
             href="/"
             class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
           >
-            Get started
+            Get started {title}
           </a>
         </div>
       </div>
