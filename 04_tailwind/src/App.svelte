@@ -1,10 +1,26 @@
 <script lang="ts">
-  export let name: string;
+  import type { Writable } from "svelte/store";
+  import type { IElementStore } from "./stores";
+
+  export let elementStore: Writable<IElementStore>;
   const title = "%APP_NAME%";
 </script>
 
 <main class="border-indigo-600">
-  <h1>Hello {name}!</h1>
+  <h1>Hello !</h1>
+
+  {#await $elementStore.getElements()}
+    <p>waiting for the promise to resolve...</p>
+  {:then}
+    {#each $elementStore.elements as el}
+      <div>
+        {el.name}
+      </div>
+    {/each}
+  {:catch error}
+    <p>Something went wrong: {error.message}</p>
+  {/await}
+
   <p>
     Visit the <a
       class="text-blue-600 text-4xl underline"
