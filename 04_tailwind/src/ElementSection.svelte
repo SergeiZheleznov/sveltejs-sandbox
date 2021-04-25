@@ -2,23 +2,15 @@
   import { getContext, onMount } from "svelte";
   import Element from "./Element.svelte";
   import { ELEMENT_STORE_KEY } from "./models";
-  import type { IElement } from "./models";
   import type { IAppContext } from "./models/IAppContext";
   const { elementStore } = getContext<IAppContext>(ELEMENT_STORE_KEY);
 
-  let elements: IElement[] = [];
   let loading: boolean = false;
 
-  elementStore.loading.subscribe((value) => {
-    loading = value;
-  });
-
-  elementStore.elements.subscribe((value) => {
-    elements = value;
-  });
-
   const fetchElements = async () => {
+    loading = true;
     await elementStore.getElements();
+    loading = false;
   };
 
   onMount(async () => {
@@ -70,7 +62,7 @@
     </div>
     <div class="mt-6 pt-10 grid gap-16 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
       {#if !loading}
-        {#each elements as el}
+        {#each $elementStore as el}
           <Element element={el} />
         {/each}
       {:else}

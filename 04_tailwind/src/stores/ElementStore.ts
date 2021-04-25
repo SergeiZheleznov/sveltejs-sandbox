@@ -1,27 +1,23 @@
-import { Writable, writable } from "svelte/store";
+import { Subscriber, Unsubscriber, Writable, writable } from "svelte/store";
 import type { IApiService, IElement } from "../models";
 
 export interface IElementStore {
+  subscribe: (this: void, run: Subscriber<IElement[]>)=> Unsubscriber;
   getElements: () => Promise<void>;
-  elements: Writable<IElement[]>;
-  loading: Writable<boolean>;
   addElement: (element: IElement) => void;
 }
 
-export class ElementStore implements IElementStore {
-  public elements: Writable<IElement[]> = writable([]);
-  public loading: Writable<boolean> = writable(false);
+export const ElementStore = (apiService: IApiService): IElementStore => {
+  const {subscribe, set, update}: Writable<IElement[]> = writable([]);
 
-  constructor(private apiService: IApiService){}
-
-  public async getElements() {
-    this.loading.set(true);
-    const response = await this.apiService.getElements();
-    this.elements.set(response);
-    this.loading.set(false);
+  const getElements = async () => {
+    const response = await apiService.getElements();
+    set(response);
   }
   
-  public addElement(el) {
-    this.elements.update((value)=>([...value, el]));
+  const addElement = (el) => {
+    update((value)=>([...value, el]));
   }
+
+  return {subscribe, getElements, addElement}
 }

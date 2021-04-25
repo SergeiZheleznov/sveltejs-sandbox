@@ -7,7 +7,7 @@
   import { ElementStore } from "./stores";
 
   const apiService = new ApiService("%APP_API_URL%");
-  const elementStore = new ElementStore(apiService);
+  const elementStore = ElementStore(apiService);
 
   setContext<IAppContext>(ELEMENT_STORE_KEY, { elementStore });
 
