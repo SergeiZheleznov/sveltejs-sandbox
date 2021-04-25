@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getAppContext } from 'contexts/AppContext';
+  import { getAppContext } from 'contexts';
   import { onMount } from 'svelte';
   import Element from './Element.svelte';
 

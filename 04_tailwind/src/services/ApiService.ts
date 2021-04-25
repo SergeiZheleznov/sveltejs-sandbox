@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { IApiService, IElement } from '../models';
+import type { IApiService, IElement } from 'models';
 
 interface IDataObj {
   text: string;

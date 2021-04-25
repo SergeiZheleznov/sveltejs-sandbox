@@ -1,8 +1,8 @@
 <script lang="ts">
   import ElementSection from './ElementSection.svelte';
   import { ApiService } from 'services';
-  import { ElementStore } from './stores';
-  import { setAppContext } from 'contexts/AppContext';
+  import { ElementStore } from 'stores';
+  import { setAppContext } from 'contexts';
 
   const apiService = new ApiService('%APP_API_URL%');
   const elementStore = ElementStore(apiService);

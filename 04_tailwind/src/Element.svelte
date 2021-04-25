@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { IElement } from './models';
+  import type { IElement } from 'models';
 
   export let element: IElement;
 </script>
