@@ -1,14 +1,12 @@
 <script lang="ts">
-  import { ELEMENT_STORE_KEY } from 'common/Constants';
-  import { setContext } from 'svelte';
   import ElementSection from './ElementSection.svelte';
-  import type { IAppContext } from 'models';
   import { ApiService } from 'services';
   import { ElementStore } from './stores';
+  import { setAppContext } from 'contexts/AppContext';
 
   const apiService = new ApiService('%APP_API_URL%');
   const elementStore = ElementStore(apiService);
-  setContext<IAppContext>(ELEMENT_STORE_KEY, { elementStore });
+  setAppContext(elementStore);
 </script>
 
 <ElementSection />

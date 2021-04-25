@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { ELEMENT_STORE_KEY } from 'common/Constants';
-  import { getContext, onMount } from 'svelte';
+  import { getAppContext } from 'contexts/AppContext';
+  import { onMount } from 'svelte';
   import Element from './Element.svelte';
-  import type { IAppContext } from './models/IAppContext';
 
-  const { elementStore } = getContext<IAppContext>(ELEMENT_STORE_KEY);
+  const { elementStore } = getAppContext();
 
   let loading = false;
 
