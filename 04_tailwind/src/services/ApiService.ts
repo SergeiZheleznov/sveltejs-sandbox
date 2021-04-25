@@ -3,9 +3,9 @@ import type { IApiService, IElement } from '../models';
 
 interface IDataObj {
   text: string;
-  _id: string;
   createdAt: string;
   updatedAt: string;
+  ['key']: string;
 }
 
 interface IResponse {
@@ -14,20 +14,21 @@ interface IResponse {
 }
 
 export class ApiService implements IApiService {
-  constructor(private apiUrl: string) {}
+  constructor(private _apiUrl: string) {}
 
   public async getElements(): Promise<IElement[]> {
     const amount = 15;
-
-    const response: IResponse = await axios.get(`${this.apiUrl}/random/?amount=${amount}`, {
+    /* eslint-disable @typescript-eslint/naming-convention */
+    const response: IResponse = await axios.get(`${this._apiUrl}/random/?amount=${amount}`, {
       headers: {
         'Access-Control-Allow-Origin': '*',
-        Accept: 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
     });
+    /* eslint-disable @typescript-eslint/naming-convention */
     return response.data.map((el) => ({
-      id: el._id,
+      id: el['_id'],
       text: el.text,
     } as IElement));
   }

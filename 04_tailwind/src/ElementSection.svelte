@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { getContext, onMount } from "svelte";
+  import { getContext, onMount } from 'svelte';
 
-  import Element from "./Element.svelte";
-  import { ELEMENT_STORE_KEY } from "./models";
-  import type { IAppContext } from "./models/IAppContext";
+  import Element from './Element.svelte';
+  import { ELEMENT_STORE_KEY } from './models';
+  import type { IAppContext } from './models/IAppContext';
 
   const { elementStore } = getContext<IAppContext>(ELEMENT_STORE_KEY);
 
@@ -51,8 +51,8 @@
             type="button"
             on:click={async () => {
               elementStore.addElement({
-                id: "asd",
-                text: "sksdes",
+                id: 'asd',
+                text: 'sksdes',
               });
             }}
             class="w-full bg-indigo-600 px-4 py-2 border border-transparent rounded-md flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:inline-flex"
