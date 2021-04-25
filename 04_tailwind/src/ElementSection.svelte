@@ -1,11 +1,13 @@
 <script lang="ts">
   import { getContext, onMount } from "svelte";
+
   import Element from "./Element.svelte";
   import { ELEMENT_STORE_KEY } from "./models";
   import type { IAppContext } from "./models/IAppContext";
+
   const { elementStore } = getContext<IAppContext>(ELEMENT_STORE_KEY);
 
-  let loading: boolean = false;
+  let loading = false;
 
   const fetchElements = async () => {
     loading = true;

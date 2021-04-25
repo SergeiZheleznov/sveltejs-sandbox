@@ -1,5 +1,5 @@
-import type { IApiService, IElement } from "../models";
 import axios from 'axios';
+import type { IApiService, IElement } from '../models';
 
 interface IDataObj {
   text: string;
@@ -10,26 +10,25 @@ interface IDataObj {
 
 interface IResponse {
   data: IDataObj[];
-  ["key"]: any;
+  ['key']: string | number;
 }
 
 export class ApiService implements IApiService {
+  constructor(private apiUrl: string) {}
 
-  constructor (private api_url: string) {}
-  public async getElements(){
-
+  public async getElements(): Promise<IElement[]> {
     const amount = 15;
 
-    const response: IResponse = await axios.get(`${this.api_url}/random/?amount=${amount}`, {
-      headers:{
+    const response: IResponse = await axios.get(`${this.apiUrl}/random/?amount=${amount}`, {
+      headers: {
         'Access-Control-Allow-Origin': '*',
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
     });
-    return response.data.map(el => ({
+    return response.data.map((el) => ({
       id: el._id,
-      text: el.text
+      text: el.text,
     } as IElement));
   }
 }

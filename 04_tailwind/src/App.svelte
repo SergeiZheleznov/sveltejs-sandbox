@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { setContext } from "svelte";
-  import ElementSection from "./ElementSection.svelte";
-  import { ELEMENT_STORE_KEY } from "./models";
-  import type { IAppContext } from "./models/IAppContext";
-  import { ApiService } from "./services/ApiService";
-  import { ElementStore } from "./stores";
+  import { setContext } from 'svelte';
+  import ElementSection from './ElementSection.svelte';
+  import { ELEMENT_STORE_KEY } from './models/Constants';
+  import type { IAppContext } from './models/IAppContext';
+  import { ApiService } from './services/ApiService';
+  import { ElementStore } from './stores';
 
-  const apiService = new ApiService("%APP_API_URL%");
+  const apiService = new ApiService('%APP_API_URL%');
   const elementStore = ElementStore(apiService);
 
   setContext<IAppContext>(ELEMENT_STORE_KEY, { elementStore });
 
-  const title = "%APP_NAME%";
+  const title = '%APP_NAME%';
 </script>
 
 <main class="border-indigo-600">

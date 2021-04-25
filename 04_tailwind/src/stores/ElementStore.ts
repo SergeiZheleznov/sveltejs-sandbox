@@ -1,5 +1,7 @@
-import { Subscriber, Unsubscriber, Writable, writable } from "svelte/store";
-import type { IApiService, IElement } from "../models";
+import {
+  Subscriber, Unsubscriber, Writable, writable,
+} from 'svelte/store';
+import type { IApiService, IElement } from '../models';
 
 export interface IElementStore {
   subscribe: (this: void, run: Subscriber<IElement[]>)=> Unsubscriber;
@@ -8,16 +10,16 @@ export interface IElementStore {
 }
 
 export const ElementStore = (apiService: IApiService): IElementStore => {
-  const {subscribe, set, update}: Writable<IElement[]> = writable([]);
+  const { subscribe, set, update }: Writable<IElement[]> = writable([]);
 
   const getElements = async () => {
     const response = await apiService.getElements();
     set(response);
-  }
-  
-  const addElement = (el) => {
-    update((value)=>([...value, el]));
-  }
+  };
 
-  return {subscribe, getElements, addElement}
-}
+  const addElement = (el) => {
+    update((value) => ([...value, el]));
+  };
+
+  return { subscribe, getElements, addElement };
+};
