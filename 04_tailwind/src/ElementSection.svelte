@@ -1,21 +1,11 @@
 <script lang="ts">
   import { getAppContext } from 'contexts';
-  import { onMount } from 'svelte';
   import Element from './Element.svelte';
-
   const { elementStore } = getAppContext();
-
-  let loading = false;
-
+  let promise = elementStore.getElements();
   const fetchElements = async () => {
-    loading = true;
-    await elementStore.getElements();
-    loading = false;
+    promise = elementStore.getElements();
   };
-
-  onMount(async () => {
-    await fetchElements();
-  });
 </script>
 
 <div class="bg-white pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
@@ -55,13 +45,13 @@
       </div>
     </div>
     <div class="mt-6 pt-10 grid gap-16 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
-      {#if !loading}
+      {#await promise}
+        <div>Loading</div>
+      {:then}
         {#each $elementStore as el}
           <Element element={el} />
         {/each}
-      {:else}
-        <div>Loading...</div>
-      {/if}
+      {/await}
     </div>
   </div>
 </div>
