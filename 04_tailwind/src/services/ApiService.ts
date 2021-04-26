@@ -16,10 +16,9 @@ interface IResponse {
 export class ApiService implements IApiService {
   constructor(private _apiUrl: string) {}
 
-  public async getElements(): Promise<IElement[]> {
-    const amount = 15;
+  public async getElements(count: number = 15): Promise<IElement[]> {
     /* eslint-disable @typescript-eslint/naming-convention */
-    const response: IResponse = await axios.get(`${this._apiUrl}/random/?amount=${amount}`, {
+    const response: IResponse = await axios.get(`${this._apiUrl}/random/?amount=${count}`, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json',

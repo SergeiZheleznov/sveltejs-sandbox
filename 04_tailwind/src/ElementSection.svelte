@@ -13,10 +13,6 @@
     <div>
       <h2 class="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl">Press</h2>
       <div class="mt-3 sm:mt-4 lg:grid lg:grid-cols-2 lg:gap-5 lg:items-center">
-        <p class="text-xl text-gray-500">
-          Get weekly articles in your inbox on how to grow your business.
-        </p>
-
         <div
           class="mt-2 flex-shrink-0 w-full flex rounded-md shadow-sm sm:mt-0 sm:ml-3 sm:w-auto sm:inline-flex"
         >
@@ -44,14 +40,15 @@
         </div>
       </div>
     </div>
-    <div class="mt-6 pt-10 grid gap-16 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
-      {#await promise}
-        <div>Loading</div>
-      {:then}
+
+    {#await promise}
+      <div>Loading</div>
+    {:then}
+      <div class="mt-6 pt-10 grid gap-16 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-12">
         {#each $elementStore as el}
           <Element element={el} />
         {/each}
-      {/await}
-    </div>
+      </div>
+    {/await}
   </div>
 </div>
