@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { getAppContext } from 'contexts';
+  import { Button } from 'components';
   import Element from './Element.svelte';
+  import { getAppContext } from 'contexts';
   const { elementStore } = getAppContext();
   let promise = elementStore.getElements();
   const fetchElements = async () => {
@@ -16,27 +17,21 @@
         <div
           class="mt-2 flex-shrink-0 w-full flex rounded-md shadow-sm sm:mt-0 sm:ml-3 sm:w-auto sm:inline-flex"
         >
-          <button
-            type="button"
+          <Button
+            name={'Fetch Elements'}
             on:click={async () => {
               await fetchElements();
             }}
-            class="w-full bg-indigo-600 px-4 py-2 border border-transparent rounded-md flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:inline-flex"
-          >
-            Fetch Elements
-          </button>
-          <button
-            type="button"
+          />
+          <Button
+            name={'Add element'}
             on:click={async () => {
               elementStore.addElement({
                 id: 'asd',
                 text: 'sksdes'
               });
             }}
-            class="w-full bg-indigo-600 px-4 py-2 border border-transparent rounded-md flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:inline-flex"
-          >
-            Add
-          </button>
+          />
         </div>
       </div>
     </div>
