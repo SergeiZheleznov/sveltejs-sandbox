@@ -1,5 +1,5 @@
 <script lang="ts">
-  import MineField from "./components/MineField.svelte";
+  import { MineField } from "src/components";
 
   import Tailwind from "./Tailwind.svelte";
 
@@ -9,4 +9,4 @@
 <Tailwind />
 <h1 class="text-red-600">{name}</h1>
 
-<MineField colCount={10} rowCount={10} />
+<MineField />

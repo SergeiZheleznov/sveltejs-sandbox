@@ -1,23 +1,22 @@
 <script lang="ts">
-  import { Field } from "src/models";
-  import MineCell from "components/MineCell.svelte";
-
-  export let colCount: number;
-  export let rowCount: number;
-
-  const field = new Field(colCount, rowCount);
+  import { MineCell } from "src/components";
+  import { field } from "src/stores";
 </script>
 
 <div class="fieldWrapper">
-  {#each field.cells as row}
-    <div class="flex flex-row">
+  {#each $field.cells as row}
+    <div class="flex flex-row gap-1">
       {#each row as cell}
-        <div>
-          <MineCell {cell} />
+        <div class="mb-1">
+          <MineCell
+            on:click={() => field.openCell(cell.row, cell.col)}
+            {cell}
+          />
         </div>
       {/each}
     </div>
   {/each}
+  <button on:click={() => field.reset()}>Reset</button>
 </div>
 
 <style style lang="postcss">
