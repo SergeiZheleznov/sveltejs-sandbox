@@ -1,35 +1,19 @@
 
-import type { ICell, IField } from "src/interfaces";
-import { Field } from "src/models";
+
+import { FieldHelper } from "src/helpers";
+import type { IField } from "src/interfaces";
 import { writable } from "svelte/store";
 
 
-const fieldStore = (colCount: number, rowCount: number) => {
-  const field = new Field(colCount, rowCount);
-  const { subscribe, set, update } = writable<IField>(field);
+const fieldStore = () => {
+  const fieldHelper = new FieldHelper();
+  const { subscribe, set, update } = writable<IField>(fieldHelper.generateField());
 
-  const reset = () => {
-    const newField = new Field(colCount, rowCount);
-    set(newField);
-  }
-
-  const openCell = (row: number, col: number) => {
-    update(f => {
-      f.cells[row][col].state = 'opened';
-      return f;
-    })
-  }
-
-  const toggleMark = (row: number, col: number) => {
-    update(f => {
-      const cell = f.cells[row][col];
-
-      cell.state = cell.state === 'marked' ? 'closed' : 'marked';
-      return f;
-    });
-  }
+  const reset = () => set(fieldHelper.generateField())
+  const openCell = (row: number, col: number) => update(f => (fieldHelper.openCell(f, row, col)));
+  const toggleMark = (row: number, col: number) => update(f => (fieldHelper.toggleMark(f, row, col)));
 
   return { subscribe, reset, openCell, toggleMark };
 }
 
-export const field = fieldStore(10, 10);
+export const field = fieldStore();

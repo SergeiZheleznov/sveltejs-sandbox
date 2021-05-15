@@ -1,7 +1,8 @@
-import type { ICell } from "./ICell";
+import type { ICell } from "src/interfaces";
 
 export interface IField {
-  colCount: number,
-  rowCount: number,
-  cells: ICell[][],
+  cols: number;
+  rows: number;
+  mines: number;
+  cells: ICell[][];
 }
