@@ -1,6 +1,16 @@
 <script lang="ts">
   import { MineCell } from "src/components";
   import { field } from "src/stores";
+
+  const onCellLeftClick = (cell: ICell) => {
+    if (cell.state !== 'marked') {
+      field.openCell(cell.row, cell.col);
+    }
+  }
+
+  const onCellRightClick = (cell: ICell) => {
+    field.markCell(cell.row, cell.col);
+  }
 </script>
 
 <div class="fieldWrapper">
@@ -9,7 +19,8 @@
       {#each row as cell}
         <div class="mb-1">
           <MineCell
-            on:click={() => field.openCell(cell.row, cell.col)}
+            on:click={() => onCellLeftClick(cell)}
+            on:contextmenu={onCellRightClick(cell)}
             {cell}
           />
         </div>

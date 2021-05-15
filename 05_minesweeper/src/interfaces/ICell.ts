@@ -1,4 +1,4 @@
-export type ICellState = 'opened' | 'closed';
+export type ICellState = 'opened' | 'closed' | 'marked';
 
 export interface ICell {
   row: number;
