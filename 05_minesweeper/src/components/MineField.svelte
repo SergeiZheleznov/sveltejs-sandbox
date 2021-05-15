@@ -10,7 +10,9 @@
   };
 
   const onCellRightClick = (cell: ICell) => {
-    field.toggleMark(cell.row, cell.col);
+    if (cell.state !== "opened") {
+      field.toggleMark(cell.row, cell.col);
+    }
   };
 </script>
 
