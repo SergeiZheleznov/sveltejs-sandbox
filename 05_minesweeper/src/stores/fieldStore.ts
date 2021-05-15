@@ -4,7 +4,6 @@ import { FieldHelper } from "src/helpers";
 import type { IField } from "src/interfaces";
 import { writable } from "svelte/store";
 
-
 const fieldStore = () => {
   const fieldHelper = new FieldHelper();
   const { subscribe, set, update } = writable<IField>(fieldHelper.generateField());
