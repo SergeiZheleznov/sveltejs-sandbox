@@ -20,16 +20,16 @@ const fieldStore = (colCount: number, rowCount: number) => {
     })
   }
 
-  const markCell = (row: number, col: number) => {
+  const toggleMark = (row: number, col: number) => {
     update(f => {
       const cell = f.cells[row][col];
 
-      cell.state = 'marked';
+      cell.state = cell.state === 'marked' ? 'closed' : 'marked';
       return f;
     });
   }
 
-  return {subscribe, reset, openCell, markCell};
+  return { subscribe, reset, openCell, toggleMark };
 }
 
 export const field = fieldStore(10, 10);
