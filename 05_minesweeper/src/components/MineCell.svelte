@@ -22,7 +22,6 @@
     {/if}
   </div>
 </div>
-
 <style style lang="postcss">
   .cellWrapper {
     @apply text-white w-10 h-10 flex flex-wrap justify-center content-center bg-gray-700;
