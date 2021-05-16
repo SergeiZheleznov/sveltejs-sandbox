@@ -1,10 +1,14 @@
+const colors = require('tailwindcss/colors');
+
 module.exports = {
-	mode: "jit",
-	purge: [
-		"./src/**/*.{html,js,svelte,ts}",
-	],
+	mode: 'jit',
+	purge: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				primary: colors.lime
+			}
+		}
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/forms')]
 };
